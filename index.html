@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transparência — Procuradoria-Geral do Estado do Paraná</title>
+<style>
+  :root {
+    --pge-navy: #0e2b4f;
+    --pge-navy-dark: #081a30;
+    --pge-navy-light: #1a4079;
+    --pge-red: #b91d1d;
+    --pge-gold: #c8a249;
+    --bg: #f4f6f9;
+    --surface: #ffffff;
+    --border: #d8dde5;
+    --border-strong: #b8c0cc;
+    --text: #1c2530;
+    --text-muted: #5a6675;
+    --text-light: #8a94a3;
+    --positive: #1a6b3c;
+    --negative: #b91d1d;
+    --neutral: #c0941a;
+    --row-alt: #f8fafc;
+    --row-hover: #eef3fa;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: -apple-system, "Segoe UI", "Inter", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* === TOP UTILITY BAR === */
+  .util-bar {
+    background: var(--pge-navy-dark);
+    color: #cdd5e0;
+    font-size: 12px;
+    padding: 6px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .util-bar a { color: #cdd5e0; text-decoration: none; margin-left: 16px; }
+  .util-bar a:hover { color: #fff; text-decoration: underline; }
+  .util-left { display: flex; align-items: center; gap: 16px; }
+  .font-controls button {
+    background: transparent; border: 1px solid #3a4d68; color: #cdd5e0;
+    padding: 2px 8px; font-size: 11px; cursor: pointer; margin-left: 4px;
+  }
+  .font-controls button:hover { background: #3a4d68; }
+
+  /* === HEADER === */
+  .header {
+    background: linear-gradient(135deg, var(--pge-navy) 0%, var(--pge-navy-light) 100%);
+    color: #fff;
+    padding: 22px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 4px solid var(--pge-gold);
+  }
+  .brasao {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+  .brasao svg { width: 50px; height: 50px; }
+  .header-text h1 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
+  }
+  .header-text .subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .header-text .portal-name {
+    font-size: 16px;
+    color: var(--pge-gold);
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  /* === MAIN NAV === */
+  .main-nav {
+    background: var(--pge-navy-light);
+    padding: 0 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .main-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 4px;
+  }
+  .main-nav a {
+    display: inline-block;
+    padding: 10px 14px;
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    border-bottom: 3px solid transparent;
+    transition: all 0.15s;
+  }
+  .main-nav a:hover { color: #fff; background: rgba(0,0,0,0.15); }
+  .main-nav a.active {
+    color: #fff;
+    border-bottom-color: var(--pge-gold);
+    background: rgba(0,0,0,0.2);
+  }
+
+  /* === BREADCRUMB === */
+  .breadcrumb {
+    background: var(--surface);
+    padding: 10px 24px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .breadcrumb a { color: var(--pge-navy-light); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .breadcrumb .sep { margin: 0 6px; color: var(--text-light); }
+
+  /* === LAYOUT === */
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+  .page-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--pge-navy);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .page-title .ref {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: #e7edf5;
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+  .page-subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+  }
+  .page-subtitle a { color: var(--pge-navy-light); }
+
+  /* === FILTERS === */
+  .filters-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px;
+    margin-bottom: 18px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  }
+  .filters-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    align-items: end;
+  }
+  @media (max-width: 900px) {
+    .filters-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 5px;
+  }
+  .field input, .field select {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: inherit;
+    background: #fff;
+    color: var(--text);
+  }
+  .field input:focus, .field select:focus {
+    outline: 2px solid var(--pge-navy-light);
+    outline-offset: -1px;
+    border-color: var(--pge-navy-light);
+  }
+  .btn {
+    padding: 9px 18px;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-primary { background: var(--pge-navy); color: #fff; }
+  .btn-primary:hover { background: var(--pge-navy-dark); }
+  .btn-secondary {
+    background: #fff; color: var(--pge-navy); border: 1px solid var(--pge-navy);
+  }
+  .btn-secondary:hover { background: var(--pge-navy); color: #fff; }
+  .btn-ghost {
+    background: transparent; color: var(--text-muted); border: 1px solid var(--border-strong);
+  }
+  .btn-ghost:hover { background: var(--row-hover); }
+
+  /* === ACTIONS BAR === */
+  .actions-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .results-info {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .results-info strong { color: var(--text); }
+  .download-actions { display: flex; gap: 8px; }
+
+  /* === TABLE === */
+  .table-wrapper {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  thead {
+    background: var(--pge-navy);
+    color: #fff;
+  }
+  thead th {
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+  thead th:last-child { border-right: none; }
+  thead th:hover { background: var(--pge-navy-light); }
+  thead th.sortable::after {
+    content: ' ⇅';
+    opacity: 0.4;
+    font-size: 10px;
+  }
+  thead th.sort-asc::after { content: ' ↑'; opacity: 1; color: var(--pge-gold); }
+  thead th.sort-desc::after { content: ' ↓'; opacity: 1; color: var(--pge-gold); }
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  tbody tr:nth-child(even) { background: var(--row-alt); }
+  tbody tr:hover { background: var(--row-hover); }
+  tbody td {
+    padding: 11px 14px;
+    border-right: 1px solid var(--border);
+  }
+  tbody td:last-child { border-right: none; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .nome-cell { font-weight: 500; color: var(--pge-navy); }
+  .nome-cell:hover { text-decoration: underline; }
+  .neg { color: var(--negative); }
+  .pos { color: var(--positive); }
+  .empty-num { color: var(--text-light); }
+
+  /* === PAGINATION === */
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .page-controls { display: flex; gap: 4px; }
+  .page-controls button {
+    padding: 5px 10px;
+    border: 1px solid var(--border-strong);
+    background: #fff;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 12px;
+  }
+  .page-controls button:hover:not(:disabled) {
+    background: var(--pge-navy); color: #fff; border-color: var(--pge-navy);
+  }
+  .page-controls button:disabled { opacity: 0.4; cursor: not-allowed; }
+  .page-controls .current { background: var(--pge-navy); color: #fff; border-color: var(--pge-navy); }
+
+  /* === CARGO BADGE === */
+  .cargo-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .cargo-procurador {
+    background: #e7edf5;
+    color: var(--pge-navy);
+    border: 1px solid #c5d0e0;
+  }
+  .cargo-advogado {
+    background: #fdf3e7;
+    color: #8a5a14;
+    border: 1px solid #ecd9bb;
+  }
+  .lotacao-cell {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.35;
+  }
+
+  /* === INFO TOOLTIP === */
+  .info-tip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 6px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--pge-navy-light);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: Georgia, serif;
+    font-style: italic;
+    cursor: help;
+    position: relative;
+    vertical-align: middle;
+    user-select: none;
+  }
+  .info-tip:hover { background: var(--pge-navy); }
+  .info-tip:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1c2530;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 400;
+    font-style: normal;
+    font-family: inherit;
+    width: max-content;
+    max-width: 300px;
+    white-space: normal;
+    text-align: left;
+    line-height: 1.45;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    pointer-events: none;
+  }
+  .info-tip:hover::before {
+    content: '';
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-bottom-color: #1c2530;
+    z-index: 100;
+    pointer-events: none;
+  }
+  /* Abre o balão para cima quando há pouco espaço abaixo (evita corte no rodapé) */
+  .info-tip.up:hover::after {
+    top: auto;
+    bottom: calc(100% + 8px);
+  }
+  .info-tip.up:hover::before {
+    top: auto;
+    bottom: calc(100% + 2px);
+    border-bottom-color: transparent;
+    border-top-color: #1c2530;
+  }
+
+  /* === DETAIL VIEW === */
+  .detail-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .detail-header {
+    background: linear-gradient(135deg, var(--pge-navy) 0%, var(--pge-navy-light) 100%);
+    color: #fff;
+    padding: 20px 24px;
+    border-radius: 6px 6px 0 0;
+    border-bottom: 3px solid var(--pge-gold);
+  }
+  .detail-header .doc-type {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 4px;
+  }
+  .detail-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .detail-header .meta {
+    margin-top: 8px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .detail-header .meta span strong { color: #fff; }
+  .detail-body {
+    padding: 24px;
+  }
+  .detail-section {
+    margin-bottom: 24px;
+  }
+  .detail-section:last-child { margin-bottom: 0; }
+  .detail-section h3 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--pge-navy);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--pge-gold);
+  }
+  .detail-rows {
+    display: flex;
+    flex-direction: column;
+  }
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 4px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .detail-row:last-child { border-bottom: none; }
+  .detail-row .label { color: var(--text-muted); }
+  .detail-row .value {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+  .detail-row.subtotal {
+    background: #f4f6f9;
+    margin: 4px -8px;
+    padding: 10px 12px;
+    border-bottom: none;
+    border-radius: 4px;
+  }
+  .detail-row.subtotal .label {
+    font-weight: 700;
+    color: var(--text);
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+  .detail-row.subtotal .value { font-size: 14px; }
+  .detail-row.total {
+    background: var(--pge-navy);
+    color: #fff;
+    margin: 8px -8px 0;
+    padding: 14px 12px;
+    border-radius: 4px;
+  }
+  .detail-row.total .label {
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .detail-row.total .value {
+    font-size: 18px;
+    color: var(--pge-gold);
+  }
+  .badge-limite {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fcd34d;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 14px;
+    color: var(--pge-navy-light);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .back-link:hover { text-decoration: underline; }
+  .detail-actions {
+    padding: 16px 24px;
+    background: #f8fafc;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+  .info-box {
+    background: #fffbed;
+    border-left: 4px solid var(--pge-gold);
+    padding: 12px 14px;
+    margin-bottom: 18px;
+    font-size: 12px;
+    color: #6b5b1a;
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* === FOOTER === */
+  .footer {
+    background: var(--pge-navy-dark);
+    color: #cdd5e0;
+    padding: 22px 24px;
+    margin-top: 40px;
+    font-size: 12px;
+    text-align: center;
+    border-top: 3px solid var(--pge-gold);
+  }
+  .footer p { margin-bottom: 4px; }
+  .footer a { color: var(--pge-gold); text-decoration: none; }
+
+  /* === STATES === */
+  .empty-state {
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--text-muted);
+  }
+  .empty-state h3 { color: var(--text); margin-bottom: 6px; }
+
+  .hidden { display: none !important; }
+
+  /* Print */
+  @media print {
+    .util-bar, .main-nav, .breadcrumb, .filters-card, .actions-bar,
+    .pagination, .detail-actions, .back-link, .footer { display: none !important; }
+    body { background: #fff; }
+    .container { padding: 0; max-width: 100%; }
+    .detail-card { box-shadow: none; border: 1px solid #888; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- === LIST VIEW === -->
+  <div id="view-list">
+    <h1 class="page-title">
+      Transparência — Procuradoria-Geral do Estado do Paraná
+      <span class="ref" id="ref-period">Competência: Maio/2026</span>
+    </h1>
+    <p class="page-subtitle">
+      Consulta nominal aos servidores ativos da carreira de Procurador do Estado e da carreira
+      de Advogado do Estado, em conformidade com o Tema 966/STF.
+      Fonte: <strong>Meta4</strong> e <strong>Caixa Especial de Sucumbência</strong>.
+    </p>
+
+    <!-- Filters -->
+    <div class="filters-card">
+      <div class="filters-grid">
+        <div class="field" style="grid-column: span 2;">
+          <label for="f-name">Buscar por Nome</label>
+          <input type="text" id="f-name" placeholder="Digite o nome completo do(a) procurador(a)..." autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="f-month">Mês</label>
+          <select id="f-month">
+            <option>Maio</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-year">Ano</label>
+          <select id="f-year">
+            <option>2026</option>
+          </select>
+        </div>
+        <div class="field" style="display: flex; align-items: end;">
+          <button class="btn btn-primary" onclick="applyFilters()" style="width: 100%;">🔍 Buscar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prompt state (shown before name is entered) -->
+    <div id="search-prompt" class="table-wrapper" style="background: var(--surface);">
+      <div class="empty-state" style="padding: 80px 24px;">
+        <div style="font-size: 48px; margin-bottom: 12px; opacity: 0.3;">🔍</div>
+        <h3 style="color: var(--pge-navy); margin-bottom: 8px;">Informe o nome completo do(a) procurador(a) para iniciar a busca</h3>
+        <p style="max-width: 520px; margin: 0 auto;">
+          Para acessar o contracheque, digite o <strong>nome completo</strong> no campo
+          <strong>Buscar por Nome</strong> acima.
+        </p>
+      </div>
+    </div>
+
+    <!-- Actions bar -->
+    <div class="actions-bar hidden" id="actions-bar">
+      <div class="results-info">
+        Exibindo <strong id="count-shown">0</strong> de <strong id="count-total">0</strong> registros
+      </div>
+      <div class="download-actions">
+        <button class="btn btn-secondary" onclick="downloadCSV()">⬇ Baixar CSV</button>
+        <button class="btn btn-secondary" onclick="window.print()">🖨 Imprimir / PDF</button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrapper hidden" id="table-wrapper">
+      <table id="tbl">
+        <thead>
+          <tr>
+            <th class="sortable" data-key="nome">Nome</th>
+            <th class="sortable" data-key="cargo" style="width: 180px;">Cargo</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div class="pagination">
+        <div>
+          <label style="font-size: 12px; color: var(--text-muted);">
+            Por página:
+            <select id="per-page" onchange="setPerPage()" style="margin-left: 4px; padding: 3px 6px; border: 1px solid var(--border-strong); border-radius: 3px;">
+              <option>20</option>
+              <option>50</option>
+              <option>100</option>
+              <option value="9999">Todos</option>
+            </select>
+          </label>
+        </div>
+        <div class="page-controls" id="page-controls"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- === DETAIL VIEW === -->
+  <div id="view-detail" class="hidden">
+    <a href="#" class="back-link" onclick="showList(); return false;">← Voltar para a lista</a>
+
+    <div class="detail-card">
+      <div class="detail-header">
+        <div class="doc-type">Contracheque Único · Detalhamento da Remuneração</div>
+        <h2 id="d-nome"></h2>
+        <div class="meta">
+          <span>Cargo: <strong id="d-cargo">Procurador(a) do Estado</strong></span>
+          <span>Competência: <strong id="d-comp">Maio/2026</strong></span>
+          <span>Lotação: <strong id="d-lotacao">—</strong></span>
+          <span>Cidade: <strong id="d-cidade">—</strong></span>
+          <span>Ato Formal: <strong id="d-ato">—</strong></span>
+        </div>
+      </div>
+
+      <div class="detail-body">
+        <!-- Remuneração (todos os créditos) -->
+        <div class="detail-section">
+          <h3>Remuneração</h3>
+          <div class="detail-rows" id="d-remuneracao"></div>
+        </div>
+
+        <!-- Descontos -->
+        <div class="detail-section">
+          <h3>Descontos</h3>
+          <div class="detail-rows" id="d-descontos"></div>
+        </div>
+
+        <!-- Ajustes para próximas folhas — suprimido por ora (reativar removendo este comentário e restaurando a div #d-ajustes) -->
+
+        <!-- Resumo -->
+        <div class="detail-section">
+          <h3>Resumo</h3>
+          <div class="detail-rows" id="d-resumo"></div>
+        </div>
+      </div>
+
+      <div class="detail-actions">
+        <button class="btn btn-ghost" onclick="window.print()">🖨 Imprimir</button>
+        <button class="btn btn-secondary" onclick="downloadIndividualCSV()">⬇ Baixar CSV (individual)</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <p><strong>Procuradoria-Geral do Estado do Paraná</strong></p>
+  <p>Rua Paula Gomes, 145 · São Francisco · Curitiba/PR · CEP 80510-070</p>
+  <p>Última atualização: <span id="updated-at"></span></p>
+</footer>
+
+<script>
+const DATA = [{"nome":"FERNANDO ALCANTARA CASTELO","cargo":"Procurador","lotacao":"GABINETE DO PROCURADOR-GERAL DO ESTADO - GP","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":39653.83,"funcao_confianca":8787.55,"redutor_salarial":-2075.19,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":20055.65,"indice_verbas_ind":0.432549,"limitacao":-3827.48,"auxilio_saude":5291.29,"contrib_previdenciaria":-5551.54,"imposto_renda":-10211.02,"outros_descontos":-2.42},{"nome":"LUIZ HENRIQUE SORMANI BARBUGIANI","cargo":"Procurador","lotacao":"COORDENADORIA DE ESTUDOS JURIDICOS - CEJ","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":43937.76,"funcao_confianca":8787.55,"redutor_salarial":-6359.12,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":16228.17,"indice_verbas_ind":0.35,"limitacao":0,"auxilio_saude":3907.96,"contrib_previdenciaria":-6151.29,"imposto_renda":-9941.82,"outros_descontos":-2.42},{"nome":"ANDREA MARGARETHE ROGOSKI ANDRADE","cargo":"Procurador","lotacao":"CORREGEDORIA-GERAL","cidade":"Curitiba","ato_formal":"SEAP-DEC-00234/02021995","remuneracao":43937.76,"funcao_confianca":10984.44,"redutor_salarial":-8556.01,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":16228.17,"indice_verbas_ind":0.35,"limitacao":0,"auxilio_saude":5821.77,"contrib_previdenciaria":-6151.29,"imposto_renda":-10098.23,"outros_descontos":-317.42},{"nome":"CAROLINA LUCENA SCHUSSEL","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE RECURSOS HUMANOS - PCRH","cidade":"Curitiba","ato_formal":"SEAP-DEC-03790/25102004","remuneracao":43949.61,"funcao_confianca":2416.58,"redutor_salarial":0,"gratificacoes":0,"ferias":697.36,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":16228.17,"indice_verbas_ind":0.35,"limitacao":0,"auxilio_saude":5331.8,"contrib_previdenciaria":-6151.29,"imposto_renda":-10147.11,"outros_descontos":-2.42},{"nome":"BRAULIO CESCO FLEURY","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE OBRAS E SERVIÇOS DE ENGENHARIA-PCO","cidade":"Curitiba","ato_formal":"PGE-DEC-08.256/03092010","remuneracao":43937.76,"funcao_confianca":6590.66,"redutor_salarial":-4162.23,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":16228.17,"indice_verbas_ind":0.35,"limitacao":0,"auxilio_saude":5291.29,"contrib_previdenciaria":-6151.29,"imposto_renda":-10098.23,"outros_descontos":-2.42},{"nome":"CLAUDIO MOREIRA PHILOMENO GOMES NETO","cargo":"Procurador","lotacao":"PROCURADORIA DE EXECUCOES PRECATORIOS E CALCULOS","cidade":"Curitiba","ato_formal":"PGE-DEC-07.809/22032013","remuneracao":39775.53,"funcao_confianca":6590.66,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":16228.17,"indice_verbas_ind":0.35,"limitacao":0,"auxilio_saude":5291.29,"contrib_previdenciaria":-5551.54,"imposto_renda":-10177.56,"outros_descontos":-2.42},{"nome":"FERNANDO MERINI","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":43937.76,"funcao_confianca":8787.55,"redutor_salarial":-6359.12,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":16228.17,"indice_verbas_ind":0.35,"limitacao":0,"auxilio_saude":5215.33,"contrib_previdenciaria":-6151.29,"imposto_renda":-10046.09,"outros_descontos":-2.42},{"nome":"ALEX YOSHIO SUGAYAMA","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE LONDRINA","cidade":"Londrina","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":43205.46,"funcao_confianca":8787.55,"redutor_salarial":-5626.82,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":16228.17,"indice_verbas_ind":0.35,"limitacao":0,"auxilio_saude":5171.04,"contrib_previdenciaria":-6048.76,"imposto_renda":-10074.29,"outros_descontos":-2.42},{"nome":"FELIPE AZEVEDO BARROS","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE PONTA GROSSA","cidade":"Ponta Grossa","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":43644.84,"funcao_confianca":6590.66,"redutor_salarial":-3869.31,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":16228.17,"indice_verbas_ind":0.35,"limitacao":0,"auxilio_saude":5036.17,"contrib_previdenciaria":-6110.28,"imposto_renda":-10005.23,"outros_descontos":-4000.23},{"nome":"CAROLINA KUMMER TREVISAN","cargo":"Procurador","lotacao":"ASSESSORIA TÉCNICA - AT","cidade":"Curitiba","ato_formal":"CC-DEC-03.451/24092008","remuneracao":43937.76,"funcao_confianca":8787.55,"redutor_salarial":-6359.12,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":16228.17,"indice_verbas_ind":0.35,"limitacao":0,"auxilio_saude":4999.36,"contrib_previdenciaria":-6151.29,"imposto_renda":-10098.23,"outros_descontos":-2.42},{"nome":"LUCIA HELENA CACHOEIRA","cargo":"Procurador","lotacao":"GABINETE DO PROCURADOR-GERAL DO ESTADO - GP","cidade":"Curitiba","ato_formal":"PGE-DEC-08.256/03092010","remuneracao":43498.38,"funcao_confianca":27970.04,"redutor_salarial":-25102.23,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":16228.17,"indice_verbas_ind":0.35,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-6089.77,"imposto_renda":-10115.15,"outros_descontos":-2.42},{"nome":"GUILHERME SOARES","cargo":"Procurador","lotacao":"COORDENADORIA DE GESTÃO ESTRATÉGICA E TEC. DA INFORMAÇÃO-CGTI","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":41740.87,"funcao_confianca":8787.55,"redutor_salarial":-4162.23,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":16228.17,"indice_verbas_ind":0.35,"limitacao":0,"auxilio_saude":3955.89,"contrib_previdenciaria":-5843.72,"imposto_renda":-10234.95,"outros_descontos":-2.42},{"nome":"MADJER TARBINE","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE RECURSOS HUMANOS - PCRH","cidade":"Curitiba","ato_formal":"PGE-DEC-03.697/13122019","remuneracao":39775.53,"funcao_confianca":6590.66,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":16228.17,"indice_verbas_ind":0.35,"limitacao":0,"auxilio_saude":3932.31,"contrib_previdenciaria":-5551.54,"imposto_renda":-10177.56,"outros_descontos":-2.42},{"nome":"VINICIUS KLEIN","cargo":"Procurador","lotacao":"ASSESSORIA TÉCNICA - AT","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":43937.76,"funcao_confianca":8787.55,"redutor_salarial":-6359.12,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":16228.17,"indice_verbas_ind":0.35,"limitacao":0,"auxilio_saude":3408.67,"contrib_previdenciaria":-6151.29,"imposto_renda":-10098.23,"outros_descontos":-2.42},{"nome":"EDUARDO MOREIRA LIMA RODRIGUES DE CASTRO","cargo":"Procurador","lotacao":"COORDENADORIA DE ASSUNTOS FISCAIS - CAF","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":43937.76,"funcao_confianca":8787.55,"redutor_salarial":-6359.12,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0.0,"verbas_indenizatorias":16228.17,"indice_verbas_ind":0.35,"limitacao":0,"auxilio_saude":2141.68,"contrib_previdenciaria":-6180.58,"imposto_renda":-10090.18,"outros_descontos":-2.42},{"nome":"CAMILA KOCHANOWSKI SIMAO","cargo":"Procurador","lotacao":"GABINETE DO PROCURADOR-GERAL DO ESTADO - GP","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":41740.87,"funcao_confianca":11754.7,"redutor_salarial":-7129.38,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":16228.17,"indice_verbas_ind":0.35,"limitacao":0,"auxilio_saude":1930.31,"contrib_previdenciaria":-5843.72,"imposto_renda":-10182.81,"outros_descontos":-2.42},{"nome":"LUIZ FERNANDO BALDI","cargo":"Procurador","lotacao":"COORDENADORIA DO PASSIVO - CPAS","cidade":"Curitiba","ato_formal":"SEAP-DEC-06038/12082002","remuneracao":43937.76,"funcao_confianca":8787.55,"redutor_salarial":-6359.12,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":16228.17,"indice_verbas_ind":0.35,"limitacao":0,"auxilio_saude":1411.92,"contrib_previdenciaria":-6151.29,"imposto_renda":-9993.96,"outros_descontos":-317.42},{"nome":"IGOR PIRES GOMES DA COSTA","cargo":"Procurador","lotacao":"COORDENADORIA DO CONSULTIVO - CCON","cidade":"Curitiba","ato_formal":"PGE-DEC-05.943/16012017","remuneracao":40766.92,"funcao_confianca":8787.55,"redutor_salarial":-3188.28,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":450.0,"verbas_indenizatorias":16228.17,"indice_verbas_ind":0.35,"limitacao":0,"auxilio_saude":654.68,"contrib_previdenciaria":-5707.37,"imposto_renda":-10396.2,"outros_descontos":-2.42},{"nome":"LEONARDO MELO MATOS","cargo":"Procurador","lotacao":"PROCURADORIA FUNCIONAL - PRF","cidade":"Curitiba","ato_formal":"PGE-DEC-02.710/10092019","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":12996.34,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":16228.17,"indice_verbas_ind":0.35,"limitacao":0,"auxilio_saude":654.68,"contrib_previdenciaria":-5459.01,"imposto_renda":-10811.38,"outros_descontos":-9310.42},{"nome":"RAMON GRENTESKI OUAIS SANTOS","cargo":"Procurador","lotacao":"ASSESSORIA TÉCNICA - AT","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":41740.87,"funcao_confianca":8787.55,"redutor_salarial":-4162.23,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":16228.17,"indice_verbas_ind":0.35,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-5843.72,"imposto_renda":-10234.95,"outros_descontos":-2.42},{"nome":"JORGE HAROLDO MARTINS","cargo":"Procurador","lotacao":"PROCURADORIA DE BRASILIA - PRB","cidade":"Curitiba","ato_formal":"PGE-DEC-08.256/03092010","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":5600.23,"revisoes":0,"verbas_indenizatorias":12181.74,"indice_verbas_ind":0.262729,"limitacao":0,"auxilio_saude":6910.94,"contrib_previdenciaria":-5600.23,"imposto_renda":-10091.73,"outros_descontos":-2.42},{"nome":"MARCIA DIEGUEZ LEUZINGER","cargo":"Procurador","lotacao":"PROCURADORIA DE BRASILIA - PRB","cidade":"Curitiba","ato_formal":"SEAP-DEC-00234/02021995","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":6151.29,"revisoes":0,"verbas_indenizatorias":12181.74,"indice_verbas_ind":0.262729,"limitacao":0,"auxilio_saude":6910.94,"contrib_previdenciaria":-6151.29,"imposto_renda":-11174.15,"outros_descontos":-2.42},{"nome":"JOAO DE BARROS TORRES","cargo":"Procurador","lotacao":"PROCURADORIA TRABALHISTA - PRT","cidade":"Curitiba","ato_formal":"SEAP-DEC-01233/31081987","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":6151.29,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":6479.22,"contrib_previdenciaria":-6151.29,"imposto_renda":-11122.02,"outros_descontos":-136.22},{"nome":"JOSE ANACLETO ABDUCH SANTOS","cargo":"Procurador","lotacao":"PROCURADORIA ADMINISTRATIVA - PRA","cidade":"Curitiba","ato_formal":"SEAP-DEC-06560/08021990","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":6151.29,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":6466.6,"contrib_previdenciaria":-6151.29,"imposto_renda":-11174.15,"outros_descontos":-2.42},{"nome":"LILIAN ACRAS FANCHIN","cargo":"Procurador","lotacao":"PROCURADORIA DO CONTENCIOSO FISCAL - PCF","cidade":"Curitiba","ato_formal":"SEAP-DEC-06560/08021990","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":6151.29,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":6409.3,"contrib_previdenciaria":-6151.29,"imposto_renda":-11174.15,"outros_descontos":-2.42},{"nome":"LUIZ CARLOS CALDAS","cargo":"Procurador","lotacao":"COORDENADORIA DO PASSIVO - CPAS","cidade":"Curitiba","ato_formal":"SEAP-DEC-02305/19011988","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":697.36,"abono_permanencia":6151.29,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":6403.91,"contrib_previdenciaria":-6151.29,"imposto_renda":-11069.88,"outros_descontos":-7952.68},{"nome":"JULIO CESAR ZEM CARDOZO","cargo":"Procurador","lotacao":"PROCURADORIA TRABALHISTA - PRT","cidade":"Curitiba","ato_formal":"SEAP-DEC-01512/05111999","remuneracao":43937.76,"funcao_confianca":6590.66,"redutor_salarial":-4162.23,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":6401.67,"contrib_previdenciaria":-6151.29,"imposto_renda":-10150.37,"outros_descontos":-317.42},{"nome":"CESAR AUGUSTO BINDER","cargo":"Procurador","lotacao":"PROCURADORIA DE BRASILIA - PRB","cidade":"Curitiba","ato_formal":"SEAP-DEC-00234/02021995","remuneracao":43937.76,"funcao_confianca":3075.64,"redutor_salarial":-647.21,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":15272.82,"indice_verbas_ind":0.329396,"limitacao":0,"auxilio_saude":6299.77,"contrib_previdenciaria":-6151.29,"imposto_renda":-10046.09,"outros_descontos":-2.42},{"nome":"FABIOLA ALMEIDA ZANETTI DE BRITO","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE LONDRINA","cidade":"Londrina","ato_formal":"SEAP-DEC-06038/12082002","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":6262.75,"contrib_previdenciaria":-6120.53,"imposto_renda":-9378.46,"outros_descontos":-2.42},{"nome":"CLEIDE ROSECLER KAZMIERSKI","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"SEAP-DEC-02573/29091993","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":6073.55,"contrib_previdenciaria":-6151.29,"imposto_renda":-9482.55,"outros_descontos":-2.42},{"nome":"ANA LUIZA DE PAULA XAVIER","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"PGE-DEC-03.588/10102008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":6073.55,"contrib_previdenciaria":-5843.72,"imposto_renda":-8962.99,"outros_descontos":-7980.67},{"nome":"EROULTHS CORTIANO JUNIOR","cargo":"Procurador","lotacao":"PROCURADORIA ADMINISTRATIVA - PRA","cidade":"Curitiba","ato_formal":"SEAP-DEC-06560/08021990","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":6064.18,"contrib_previdenciaria":-6151.29,"imposto_renda":-9378.27,"outros_descontos":-9166.84},{"nome":"IZABEL CRISTINA MARQUES","cargo":"Procurador","lotacao":"COORDENADORIA DO CONSULTIVO - CCON","cidade":"Curitiba","ato_formal":"SEAP-DEC-06560/08021990","remuneracao":43937.76,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":6151.29,"revisoes":0,"verbas_indenizatorias":11773.24,"indice_verbas_ind":0.253919,"limitacao":0,"auxilio_saude":6064.18,"contrib_previdenciaria":-6151.29,"imposto_renda":-11174.15,"outros_descontos":-2.42},{"nome":"ALESSANDRO SIMPLICIO","cargo":"Procurador","lotacao":"PROCURADORIA DE AÇÕES COLETIVAS - PAC","cidade":"Curitiba","ato_formal":"PGE-DEC-08.256/03092010","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":2500.0,"indice_verbas_ind":0.053919,"limitacao":0,"auxilio_saude":5986.68,"contrib_previdenciaria":-5551.54,"imposto_renda":-8365.13,"outros_descontos":-73.42},{"nome":"MANOEL PEDRO HEY PACHECO FILHO","cargo":"Procurador","lotacao":"PROCURADORIA DE EXECUCOES PRECATORIOS E CALCULOS","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5948.93,"contrib_previdenciaria":-5795.02,"imposto_renda":-8880.72,"outros_descontos":-321.02},{"nome":"ADNILTON JOSE CAETANO","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE CONCESSOES CONVENIOS E PARCERIAS","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":40836.49,"funcao_confianca":6590.66,"redutor_salarial":-1060.96,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":810.0,"verbas_indenizatorias":14864.32,"indice_verbas_ind":0.320585,"limitacao":0,"auxilio_saude":5904.66,"contrib_previdenciaria":-5717.11,"imposto_renda":-10336.11,"outros_descontos":-7343.03},{"nome":"EDIVALDO APARECIDO DE JESUS","cargo":"Procurador","lotacao":"PROCURADORIA DO PATRIMONIO - PRP","cidade":"Curitiba","ato_formal":"SEAP-DEC-00279/31012003","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5904.13,"contrib_previdenciaria":-6151.29,"imposto_renda":-9482.55,"outros_descontos":-2.42},{"nome":"MARCOS ANDRE DA CUNHA","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE MARINGA","cidade":"Maringá","ato_formal":"SEAP-DEC-02045/23052000","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5904.13,"contrib_previdenciaria":-6151.29,"imposto_renda":-9430.41,"outros_descontos":-317.42},{"nome":"SONIA REGINA DIAS BARATA DA COSTA BISPO","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE LONDRINA","cidade":"Londrina","ato_formal":"SEAP-DEC-00234/02021995","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5854.61,"contrib_previdenciaria":-6151.29,"imposto_renda":-9430.41,"outros_descontos":-2.42},{"nome":"CYNTHIA GARCEZ RABELLO","cargo":"Procurador","lotacao":"PROCURADORIA DA DÍVIDA ATIVA - PDA","cidade":"Curitiba","ato_formal":"SEAP-DEC-02573/29091993","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":14644.46,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":2500.0,"indice_verbas_ind":0.053919,"limitacao":0,"auxilio_saude":5823.51,"contrib_previdenciaria":-6151.29,"imposto_renda":-12381.93,"outros_descontos":-2.42},{"nome":"CARLA MARGOT MACHADO SELEME","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"SEAP-DEC-02045/23052000","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5821.77,"contrib_previdenciaria":-6151.29,"imposto_renda":-9482.55,"outros_descontos":-3469.58},{"nome":"MARCO AURELIO BARATO","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE APUCARANA","cidade":"Apucarana","ato_formal":"SEAP-DEC-02573/29091993","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5816.8,"contrib_previdenciaria":-6151.29,"imposto_renda":-9482.55,"outros_descontos":-2.42},{"nome":"CLECIUS ALEXANDRE DURAN","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE LONDRINA","cidade":"Londrina","ato_formal":"SEAP-DEC-02045/23052000","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5811.36,"contrib_previdenciaria":-6151.29,"imposto_renda":-6807.9,"outros_descontos":-9728.42},{"nome":"MARIA JOSEANE FRONCZAK DA CUNHA","cargo":"Procurador","lotacao":"PROCURADORIA TRABALHISTA - PRT","cidade":"Curitiba","ato_formal":"SEAP-DEC-02045/23052000","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":14644.46,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5811.36,"contrib_previdenciaria":-6151.29,"imposto_renda":-12277.66,"outros_descontos":-10845.81},{"nome":"MARIA DAS GRACAS STRAPASSON DE ANDRADE","cargo":"Procurador","lotacao":"PROCURADORIA DA DÍVIDA ATIVA - PDA","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":5804.29,"contrib_previdenciaria":-5658.67,"imposto_renda":-8546.11,"outros_descontos":-2.42},{"nome":"DANIEL AUGUSTO CERIZZA PINHEIRO","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE APUCARANA","cidade":"Apucarana","ato_formal":"PGE-DEC-08.256/03092010","remuneracao":43290.55,"funcao_confianca":3075.64,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":10227.7,"indice_verbas_ind":0.220585,"limitacao":0,"auxilio_saude":5794.57,"contrib_previdenciaria":-5726.85,"imposto_renda":-9559.21,"outros_descontos":-2.42},{"nome":"MICHAEL JUNIOR FERREIRA DOS SANTOS","cargo":"Procurador","lotacao":"PROCURADORIA DA SAÚDE - PRS","cidade":"Curitiba","ato_formal":"PGE-DEC-06.421/12112012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5794.57,"contrib_previdenciaria":-5273.96,"imposto_renda":-8000.49,"outros_descontos":-2.42},{"nome":"AMANDA LOUISE RAMAJO CORVELLO BARRETO","cargo":"Procurador","lotacao":"PROCURADORIA DA DÍVIDA ATIVA - PDA","cidade":"Curitiba","ato_formal":"SEAP-DEC-02045/23052000","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":5792.7,"contrib_previdenciaria":-6151.29,"imposto_renda":-9430.41,"outros_descontos":-2.42},{"nome":"CLIFFORD GUILHERME DAL POZZO YUGUE","cargo":"Procurador","lotacao":"PROCURADORIA DO PATRIMONIO - PRP","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5751.4,"contrib_previdenciaria":-5551.54,"imposto_renda":-8469.4,"outros_descontos":-2.42},{"nome":"GISELE DA ROCHA PARENTE","cargo":"Procurador","lotacao":"PROCURADORIA DE PREVIDENCIA FUNCIONAL - PPF","cidade":"Curitiba","ato_formal":"SEAP-DEC-01798/20051996","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5736.1,"contrib_previdenciaria":-6151.29,"imposto_renda":-9430.41,"outros_descontos":-3681.07},{"nome":"MERCIA MIRANDA VASCONCELLOS CUNHA","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE JACAREZINHO","cidade":"Jacarezinho","ato_formal":"SEAP-DEC-02045/23052000","remuneracao":43937.76,"funcao_confianca":3075.64,"redutor_salarial":-647.21,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":5736.1,"contrib_previdenciaria":-6151.29,"imposto_renda":-10046.09,"outros_descontos":-10768.69},{"nome":"LORIANE LEISLI AZEREDO","cargo":"Procurador","lotacao":"CORREGEDORIA-GERAL","cidade":"Curitiba","ato_formal":"SEAP-DEC-00279/31012003","remuneracao":43937.76,"funcao_confianca":6590.66,"redutor_salarial":-4162.23,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":14864.32,"indice_verbas_ind":0.320585,"limitacao":0,"auxilio_saude":5673.04,"contrib_previdenciaria":-6151.29,"imposto_renda":-10150.37,"outros_descontos":-2.42},{"nome":"ADRIANA ZILIO MAXIMIANO","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE LONDRINA","cidade":"Londrina","ato_formal":"SEAP-DEC-01210/05052003","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5640.84,"contrib_previdenciaria":-5843.72,"imposto_renda":-8962.99,"outros_descontos":-2.42},{"nome":"LIANA SARMENTO DE MELLO QUARESMA","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE LONDRINA","cidade":"Londrina","ato_formal":"SEAP-DEC-01512/05111999","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5550.46,"contrib_previdenciaria":-6151.29,"imposto_renda":-9430.41,"outros_descontos":-317.42},{"nome":"GAZZI YOUSSEF CHARROUF","cargo":"Procurador","lotacao":"PROCURADORIA DO PATRIMONIO - PRP","cidade":"Curitiba","ato_formal":"SEAP-DEC-00279/31012003","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5488.97,"contrib_previdenciaria":-5843.72,"imposto_renda":-8962.99,"outros_descontos":-3592.73},{"nome":"LEANE MELISSA OLICSHEVIS","cargo":"Procurador","lotacao":"PROCURADORIA DO PATRIMONIO - PRP","cidade":"Curitiba","ato_formal":"PGE-DEC-08.256/03092010","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":13216.62,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5488.97,"contrib_previdenciaria":-5551.54,"imposto_renda":-10976.12,"outros_descontos":-2.42},{"nome":"JULIANA NUNES DE SANTANA","cargo":"Procurador","lotacao":"PROCURADORIA TRABALHISTA - PRT","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":597.9,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5477.94,"contrib_previdenciaria":-5273.96,"imposto_renda":-8000.49,"outros_descontos":-2.42},{"nome":"FABIO BERTOLI ESMANHOTTO","cargo":"Procurador","lotacao":"PROCURADORIA DO PATRIMONIO - PRP","cidade":"Curitiba","ato_formal":"SEAP-DEC-02045/23052000","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":14864.32,"indice_verbas_ind":0.320585,"limitacao":0,"auxilio_saude":5463.03,"contrib_previdenciaria":-6151.29,"imposto_renda":-9356.48,"outros_descontos":-775.87},{"nome":"RAQUEL MARIA TREIN DE ALMEIDA","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE RECURSOS HUMANOS - PCRH","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":5462.1,"contrib_previdenciaria":-6151.29,"imposto_renda":-9326.14,"outros_descontos":-2.42},{"nome":"FERNANDA BASTOS KAMMRADT GUERRA","cargo":"Procurador","lotacao":"PROCURADORIA TRABALHISTA - PRT","cidade":"Curitiba","ato_formal":"PGE-DEC-07.834/28072010","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5459.58,"contrib_previdenciaria":-5551.54,"imposto_renda":-8365.13,"outros_descontos":-2.42},{"nome":"LUCIANO DE QUADROS BARRADAS","cargo":"Procurador","lotacao":"PROCURADORIA DA DÍVIDA ATIVA - PDA","cidade":"Curitiba","ato_formal":"PGE-DEC-08.256/03092010","remuneracao":39775.53,"funcao_confianca":6590.66,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":11773.24,"indice_verbas_ind":0.253919,"limitacao":0,"auxilio_saude":5456.63,"contrib_previdenciaria":-5551.54,"imposto_renda":-10229.69,"outros_descontos":-2.42},{"nome":"ROSERIS BLUM","cargo":"Procurador","lotacao":"PROCURADORIA DE PREVIDENCIA FUNCIONAL - PPF","cidade":"Curitiba","ato_formal":"SEAP-DEC-00279/31012003","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":13912.23,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":7136.62,"indice_verbas_ind":0.153919,"limitacao":0,"auxilio_saude":5426.2,"contrib_previdenciaria":-5843.72,"imposto_renda":-11661.0,"outros_descontos":-317.42},{"nome":"GERSON LUIZ DECHANDT","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE PONTA GROSSA","cidade":"Ponta Grossa","ato_formal":"SEAP-DEC-02573/29091993","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5374.67,"contrib_previdenciaria":-6151.29,"imposto_renda":-9482.55,"outros_descontos":-2.42},{"nome":"WESLEI VENDRUSCOLO","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE UMUARAMA","cidade":"Umuarama","ato_formal":"SEAP-DEC-05999/23072002","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":11773.24,"indice_verbas_ind":0.253919,"limitacao":0,"auxilio_saude":5365.82,"contrib_previdenciaria":-6151.29,"imposto_renda":-9326.14,"outros_descontos":-2.42},{"nome":"GUILHERME FREIRE DE MELO BARROS","cargo":"Procurador","lotacao":"PROCURADORIA DO PATRIMONIO - PRP","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":43937.76,"funcao_confianca":6590.66,"redutor_salarial":-4162.23,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":69.74,"verbas_indenizatorias":11773.24,"indice_verbas_ind":0.253919,"limitacao":0,"auxilio_saude":5363.3,"contrib_previdenciaria":-6161.05,"imposto_renda":-10062.59,"outros_descontos":-2.42},{"nome":"PAULO ROBERTO ADAO FILHO","cargo":"Procurador","lotacao":"PROCURADORIA DA DÍVIDA ATIVA - PDA","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":5343.36,"contrib_previdenciaria":-5273.96,"imposto_renda":-7948.35,"outros_descontos":-8850.74},{"nome":"ALINE FERNANDA FAGLIONI","cargo":"Procurador","lotacao":"PROCURADORIA DE PREVIDENCIA FUNCIONAL - PPF","cidade":"Curitiba","ato_formal":"PGE-DEC-08.256/03092010","remuneracao":39775.53,"funcao_confianca":6590.66,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":14864.32,"indice_verbas_ind":0.320585,"limitacao":0,"auxilio_saude":5331.8,"contrib_previdenciaria":-5551.54,"imposto_renda":-10281.83,"outros_descontos":-9612.02},{"nome":"ROBERTO FISCHER ESTIVALET","cargo":"Procurador","lotacao":"PROCURADORIA DO PATRIMONIO - PRP","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":5331.8,"contrib_previdenciaria":-5551.54,"imposto_renda":-8365.13,"outros_descontos":-2.42},{"nome":"FERNANDO BORGES MANICA","cargo":"Procurador","lotacao":"PROCURADORIA ADMINISTRATIVA - PRA","cidade":"Curitiba","ato_formal":"SEAP-DEC-05999/23072002","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5331.8,"contrib_previdenciaria":-6151.29,"imposto_renda":-9430.41,"outros_descontos":-10711.06},{"nome":"KARINA LOCKS PASSOS","cargo":"Procurador","lotacao":"PROCURADORIA DE PREVIDENCIA FUNCIONAL - PPF","cidade":"Curitiba","ato_formal":"SEAP-DEC-00279/31012003","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5331.8,"contrib_previdenciaria":-6151.29,"imposto_renda":-9430.41,"outros_descontos":-317.42},{"nome":"GERMANA FEITOSA BASTOS AMORIM","cargo":"Procurador","lotacao":"PROCURADORIA DO PATRIMONIO - PRP","cidade":"Curitiba","ato_formal":"PGE-DEC-04.123/23052016","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":12555.79,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":11773.24,"indice_verbas_ind":0.253919,"limitacao":0,"auxilio_saude":5302.9,"contrib_previdenciaria":-5273.96,"imposto_renda":-10377.62,"outros_descontos":-2.42},{"nome":"IZABELLA MARIA MEDEIROS E ARAUJO PINTO","cargo":"Procurador","lotacao":"PROCURADORIA DE BRASILIA - PRB","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":10636.2,"indice_verbas_ind":0.229396,"limitacao":0,"auxilio_saude":5299.6,"contrib_previdenciaria":-6151.29,"imposto_renda":-9482.55,"outros_descontos":-2.42},{"nome":"MOISES MOURA SAURA","cargo":"Procurador","lotacao":"ASSESSORIA TÉCNICA - AT","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":43937.76,"funcao_confianca":8787.55,"redutor_salarial":-6359.12,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":11773.24,"indice_verbas_ind":0.253919,"limitacao":0,"auxilio_saude":5292.5,"contrib_previdenciaria":-6151.29,"imposto_renda":-10098.23,"outros_descontos":-2.42},{"nome":"FLAVIO ROSENDO DOS SANTOS","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":45877.99,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":488.2,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5292.5,"contrib_previdenciaria":-6219.64,"imposto_renda":-9598.01,"outros_descontos":-2.42},{"nome":"FERNANDO AUGUSTO MONTAI Y LOPES","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE UMUARAMA","cidade":"Umuarama","ato_formal":"PGE-DEC-05.241/17082009","remuneracao":43290.55,"funcao_confianca":3075.64,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":11716.29,"indice_verbas_ind":0.25269,"limitacao":0,"auxilio_saude":5291.29,"contrib_previdenciaria":-5775.54,"imposto_renda":-9693.62,"outros_descontos":-2.42},{"nome":"GUSTAVO HENRIQUE RAMOS FADDA","cargo":"Procurador","lotacao":"COORDENADORIA DE ASSUNTOS FISCAIS - CAF","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":43290.55,"funcao_confianca":3075.64,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":10227.7,"indice_verbas_ind":0.220585,"limitacao":0,"auxilio_saude":5291.29,"contrib_previdenciaria":-5668.41,"imposto_renda":-9460.5,"outros_descontos":-2.42},{"nome":"CHARLLES MENDES DE LIMA","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE FRANCISCO BELTRÃO","cidade":"Francisco Beltrão","ato_formal":"PGE-DEC-03.152/22102019","remuneracao":43290.55,"funcao_confianca":3075.64,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":5291.29,"contrib_previdenciaria":-5273.96,"imposto_renda":-8689.88,"outros_descontos":-2.42},{"nome":"MARIA AUGUSTA PAUL CORREA","cargo":"Procurador","lotacao":"PROCURADORIA DA DÍVIDA ATIVA - PDA","cidade":"Curitiba","ato_formal":"SEAP-DEC-01512/05111999","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5262.42,"contrib_previdenciaria":-6151.29,"imposto_renda":-9430.41,"outros_descontos":-37.82},{"nome":"PEDRO ROGERIO PINHEIRO ZUNTA","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE MARINGA","cidade":"Maringá","ato_formal":"SEAP-DEC-00279/31012003","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":10227.7,"indice_verbas_ind":0.220585,"limitacao":0,"auxilio_saude":5257.25,"contrib_previdenciaria":-6151.29,"imposto_renda":-9378.27,"outros_descontos":-317.42},{"nome":"MARCOS MASSASHI HORITA","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE LONDRINA","cidade":"Londrina","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5240.28,"contrib_previdenciaria":-5551.54,"imposto_renda":-8312.99,"outros_descontos":-2.42},{"nome":"KUNIBERT KOLB NETO","cargo":"Procurador","lotacao":"ASSESSORIA TÉCNICA - AT","cidade":"Curitiba","ato_formal":"PGE-DEC-04.743/15052009","remuneracao":41740.87,"funcao_confianca":8787.55,"redutor_salarial":-4162.23,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":180.0,"verbas_indenizatorias":11773.24,"indice_verbas_ind":0.253919,"limitacao":0,"auxilio_saude":5234.16,"contrib_previdenciaria":-5843.72,"imposto_renda":-10284.45,"outros_descontos":-6771.2},{"nome":"MAURICIO MELO LUIZE","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE MARINGA","cidade":"Maringá","ato_formal":"SEAP-DEC-00279/31012003","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5221.79,"contrib_previdenciaria":-5843.72,"imposto_renda":-8858.71,"outros_descontos":-2.42},{"nome":"WALLACE SOARES PUGLIESE","cargo":"Procurador","lotacao":"PROCURADORIA DO CONTENCIOSO FISCAL - PCF","cidade":"Curitiba","ato_formal":"SEAP-DEC-05999/23072002","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":7136.62,"indice_verbas_ind":0.153919,"limitacao":0,"auxilio_saude":5215.33,"contrib_previdenciaria":-6151.29,"imposto_renda":-9326.14,"outros_descontos":-9982.26},{"nome":"GABRIELA GOMES OLIVEIRA","cargo":"Procurador","lotacao":"COORDENADORIA JUDICIAL - CJUD","cidade":"Curitiba","ato_formal":"PGE-DEC-12.044/26112025","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":7055.46,"indice_verbas_ind":0.152168,"limitacao":0,"auxilio_saude":5211.86,"contrib_previdenciaria":-3508.1,"imposto_renda":-7968.13,"outros_descontos":-4.84},{"nome":"BRUNO GONTIJO ROCHA","cargo":"Procurador","lotacao":"ASSESSORIA TÉCNICA - AT","cidade":"Curitiba","ato_formal":"PGE-DEC-04.123/23052016","remuneracao":41045.19,"funcao_confianca":8787.55,"redutor_salarial":-3466.55,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":14864.32,"indice_verbas_ind":0.320585,"limitacao":0,"auxilio_saude":5206.9,"contrib_previdenciaria":-5746.33,"imposto_renda":-10209.59,"outros_descontos":-2.42},{"nome":"HELLEN GONCALVES LIMA","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE CONCESSOES CONVENIOS E PARCERIAS","cidade":"Curitiba","ato_formal":"PGE-DEC-03.152/22102019","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":597.9,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":10070.47,"indice_verbas_ind":0.217194,"limitacao":0,"auxilio_saude":5206.9,"contrib_previdenciaria":-5273.96,"imposto_renda":-8000.49,"outros_descontos":-2.42},{"nome":"PAULO GABRIEL VILAS BOAS DE CARVALHO","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE MARINGA","cidade":"Maringá","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5206.9,"contrib_previdenciaria":-5486.77,"imposto_renda":-8203.58,"outros_descontos":-2.42},{"nome":"DANIELA DE SOUZA GONCALVES KAMINSKI","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5204.04,"contrib_previdenciaria":-5580.75,"imposto_renda":-8466.62,"outros_descontos":-2.42},{"nome":"GUILHERME ZORATO","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE LONDRINA","cidade":"Londrina","ato_formal":"SEAP-DEC-03115/08062004","remuneracao":43290.55,"funcao_confianca":3075.64,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":11773.24,"indice_verbas_ind":0.253919,"limitacao":0,"auxilio_saude":5185.95,"contrib_previdenciaria":-5843.72,"imposto_renda":-9756.65,"outros_descontos":-633.48},{"nome":"MURILO ARJONA DE SANTI","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE CORNELIO PROCOPIO","cidade":"Cornélio Procópio","ato_formal":"PGE-DEC-04.123/23052016","remuneracao":43290.55,"funcao_confianca":3075.64,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":5164.9,"contrib_previdenciaria":-5551.54,"imposto_renda":-9263.06,"outros_descontos":-6177.88},{"nome":"BRUNO RABELO DOS SANTOS","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE PONTA GROSSA","cidade":"Ponta Grossa","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":43290.55,"funcao_confianca":3075.64,"redutor_salarial":0,"gratificacoes":0,"ferias":14473.6,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":14010.39,"indice_verbas_ind":0.302168,"limitacao":0,"auxilio_saude":5143.01,"contrib_previdenciaria":-5648.93,"imposto_renda":-12384.26,"outros_descontos":-2.42},{"nome":"LILIANE KRUETZMANN ABDO","cargo":"Procurador","lotacao":"SECRETARIA DA PROCURADORIA GERAL DO ESTADO","cidade":"Curitiba","ato_formal":"SEAP-DEC-00279/01012003","remuneracao":43937.76,"funcao_confianca":8787.55,"redutor_salarial":-6359.12,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":11773.24,"indice_verbas_ind":0.253919,"limitacao":0,"auxilio_saude":5072.09,"contrib_previdenciaria":-6151.29,"imposto_renda":-10098.23,"outros_descontos":-9669.77},{"nome":"ANA PAULA SABETZKI BOEING","cargo":"Procurador","lotacao":"PROCURADORIA DA SAÚDE - PRS","cidade":"Curitiba","ato_formal":"PGE-DEC-04.123/23052016","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5066.79,"contrib_previdenciaria":-5551.54,"imposto_renda":-8469.4,"outros_descontos":-2.42},{"nome":"LARA FERREIRA GIOVANNETTI","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"PGE-DEC-05.975/19012017","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5066.79,"contrib_previdenciaria":-5394.24,"imposto_renda":-8203.69,"outros_descontos":-7340.56},{"nome":"HELTON KRAMER LUSTOZA","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE UMUARAMA","cidade":"Umuarama","ato_formal":"PGE-DEC-04.123/23052016","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5049.16,"contrib_previdenciaria":-5273.96,"imposto_renda":-7948.35,"outros_descontos":-2.42},{"nome":"TAIS DE ALBUQUERQUE ROCHA HOLANDA","cargo":"Procurador","lotacao":"PROCURADORIA DE AÇÕES COLETIVAS - PAC","cidade":"Curitiba","ato_formal":"PGE-DEC-04.123/23052016","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5033.93,"contrib_previdenciaria":-5273.96,"imposto_renda":-8000.49,"outros_descontos":-2.42},{"nome":"CAMILA DE FATIMA FRANCHINI BIANCHI","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE MARINGA","cidade":"Maringá","ato_formal":"PGE-DEC-02.710/10092019","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":5006.46,"contrib_previdenciaria":-5273.96,"imposto_renda":-7948.35,"outros_descontos":-2.42},{"nome":"RODRIGO TOURINHO DANTAS","cargo":"Procurador","lotacao":"PROCURADORIA DA DÍVIDA ATIVA - PDA","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":4946.04,"contrib_previdenciaria":-5571.02,"imposto_renda":-8450.17,"outros_descontos":-2.42},{"nome":"BRUNO CAVICCHIOLI PEREIRA DA FONSECA","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE LONDRINA","cidade":"Londrina","ato_formal":"PGE-DEC-03.152/22102019","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4919.72,"contrib_previdenciaria":-5273.96,"imposto_renda":-7896.22,"outros_descontos":-2.42},{"nome":"JOSE IVO DE AGUIAR OLIVEIRA","cargo":"Procurador","lotacao":"PROCURADORIA DE EXECUCOES PRECATORIOS E CALCULOS","cidade":"Curitiba","ato_formal":"PGE-DEC-08.496/14122017","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":597.9,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":7283.63,"indice_verbas_ind":0.157089,"limitacao":0,"auxilio_saude":4882.41,"contrib_previdenciaria":-5273.96,"imposto_renda":-7948.35,"outros_descontos":-9059.44},{"nome":"DULCE ESTHER KAIRALLA","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"SEAP-DEC-01798/20051996","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4802.57,"contrib_previdenciaria":-6151.29,"imposto_renda":-9430.41,"outros_descontos":-2.42},{"nome":"PAULO DA GAMA-ROSA CARDOSO FILHO","cargo":"Procurador","lotacao":"PROCURADORIA DE BRASILIA - PRB","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":13727.28,"indice_verbas_ind":0.296062,"limitacao":0,"auxilio_saude":4764.3,"contrib_previdenciaria":-5551.54,"imposto_renda":-8417.26,"outros_descontos":-2.42},{"nome":"DIOGO CARVALHO CAVALCANTI PESSOA DE VASCONCELOS","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE PATO BRANCO","cidade":"Pato Branco","ato_formal":"PGE-DEC-04.123/23052016","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":4742.32,"contrib_previdenciaria":-5551.54,"imposto_renda":-8417.26,"outros_descontos":-2.42},{"nome":"JAIR ROBERTO DA SILVA","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE PATO BRANCO","cidade":"Pato Branco","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":43025.53,"funcao_confianca":3075.64,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":265.02,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4664.42,"contrib_previdenciaria":-5880.82,"imposto_renda":-9715.05,"outros_descontos":-7057.41},{"nome":"RAFAEL JEFFERSON DEGRAF","cargo":"Procurador","lotacao":"PROCURADORIA DE HONORÁRIOS DA GRATUIDADE DA JUSTIÇA - PHG","cidade":"Curitiba","ato_formal":"PGE-DEC-04.123/23052016","remuneracao":39775.53,"funcao_confianca":6590.66,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":13318.78,"indice_verbas_ind":0.287252,"limitacao":0,"auxilio_saude":4645.08,"contrib_previdenciaria":-5496.02,"imposto_renda":-10135.91,"outros_descontos":-2.42},{"nome":"MARIO ROBERTO JAGHER","cargo":"Advogado","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"SEAP-POR-99999/09011978","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":13318.78,"indice_verbas_ind":0.287252,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-5858.37,"imposto_renda":-10494.51,"outros_descontos":-2489.07},{"nome":"JOSIANI LINJARDI","cargo":"Advogado","lotacao":"PROCURADORIA REGIONAL DE MARINGA","cidade":"Maringá","ato_formal":"SEAP-DEC-99999/03011991","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":10227.7,"indice_verbas_ind":0.220585,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-5858.37,"imposto_renda":-10546.64,"outros_descontos":-12728.61},{"nome":"LETICIA MARIA DE TONI","cargo":"Procurador","lotacao":"PROCURADORIA AMBIENTAL - PAM","cidade":"Curitiba","ato_formal":"PGE-DEC-08.256/03092010","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":10227.7,"indice_verbas_ind":0.220585,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-5551.54,"imposto_renda":-8365.13,"outros_descontos":-2.42},{"nome":"JOSE CHEDE","cargo":"Advogado","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"SEAP-POR-99999/02011981","remuneracao":48459.46,"funcao_confianca":0,"redutor_salarial":-2093.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.23,"revisoes":0,"verbas_indenizatorias":9144.11,"indice_verbas_ind":0.197215,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-5858.23,"imposto_renda":-8291.94,"outros_descontos":-8639.94},{"nome":"JOAQUIM MARIANO PAES DE CARVALHO NETO","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE MARINGA","cidade":"Maringá","ato_formal":"SEAP-DEC-02573/29091993","remuneracao":43937.76,"funcao_confianca":3075.64,"redutor_salarial":-647.21,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-6151.29,"imposto_renda":-10150.37,"outros_descontos":-317.42},{"nome":"PAULO ROBERTO GLASER","cargo":"Procurador","lotacao":"PROCURADORIA AMBIENTAL - PAM","cidade":"Curitiba","ato_formal":"SEAP-DEC-03560/10092004","remuneracao":41740.87,"funcao_confianca":6590.66,"redutor_salarial":-1965.34,"gratificacoes":0,"ferias":15453.85,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-5843.72,"imposto_renda":-13273.96,"outros_descontos":-2.42},{"nome":"ANDRE GUSTAVO VALLIM SARTORELLI","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE MARINGA","cidade":"Maringá","ato_formal":"SEAP-DEC-04055/12122004","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":7136.62,"indice_verbas_ind":0.153919,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-5843.72,"imposto_renda":-8858.71,"outros_descontos":-2.42},{"nome":"ANDRE RENATO MIRANDA ANDRADE","cargo":"Procurador","lotacao":"COORDENADORIA DO PASSIVO - CPAS","cidade":"Curitiba","ato_formal":"MIG","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-6151.29,"imposto_renda":-9326.14,"outros_descontos":-2.42},{"nome":"CRISTINA MARIA BANDEIRA","cargo":"Advogado","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"SEAP-RES-99999/01031988","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-5858.37,"imposto_renda":-10598.78,"outros_descontos":-305.02},{"nome":"EDNEIA RIBEIRO ALKAMIN","cargo":"Advogado","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"SEAP-RES-00033/15041986","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-5858.37,"imposto_renda":-10598.78,"outros_descontos":-9634.66},{"nome":"GILBERTO NEI MULLER","cargo":"Advogado","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"SEAP-POR-00339/10041980","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-5858.37,"imposto_renda":-10546.64,"outros_descontos":-309.66},{"nome":"LUIS FERNANDO DA SILVA TAMBELLINI","cargo":"Procurador","lotacao":"PROCURADORIA DE PREVIDENCIA FUNCIONAL - PPF","cidade":"Curitiba","ato_formal":"SEAP-DEC-01798/20051996","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-6151.29,"imposto_renda":-9482.55,"outros_descontos":-317.42},{"nome":"MANOEL HENRIQUE MAINGUE","cargo":"Procurador","lotacao":"PROCURADORIA DO CONTENCIOSO FISCAL - PCF","cidade":"Curitiba","ato_formal":"SEAP-DEC-02573/29091993","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":6151.29,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-6151.29,"imposto_renda":-11174.15,"outros_descontos":-2.42},{"nome":"ROGERIO MOLETTA NASCIMENTO","cargo":"Advogado","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"SEAP-POR-99999/10091984","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-5858.37,"imposto_renda":-10546.64,"outros_descontos":-252.42},{"nome":"VALQUIRIA BASSETTI PROCHMANN","cargo":"Procurador","lotacao":"PROCURADORIA FUNCIONAL - PRF","cidade":"Curitiba","ato_formal":"SEAP-DEC-01798/20051996","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-6151.29,"imposto_renda":-9378.27,"outros_descontos":-2.42},{"nome":"KARINA RACHINSKI DE ALMEIDA","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"SEAP-DEC-05999/23072002","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-5843.72,"imposto_renda":-8858.71,"outros_descontos":-2.42},{"nome":"LUYZA MARKS DE ALMEIDA","cargo":"Procurador","lotacao":"PROCURADORIA DO PATRIMONIO - PRP","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-5736.59,"imposto_renda":-8729.87,"outros_descontos":-2.42},{"nome":"CECY THEREZA CERCAL KREUTZER DE GOES","cargo":"Advogado","lotacao":"PROCURADORIA AMBIENTAL - PAM","cidade":"Curitiba","ato_formal":"SEAP-OFI-01384/23021987","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-5858.37,"imposto_renda":-10598.78,"outros_descontos":-281.78},{"nome":"GABRIELA DE PAULA SOARES","cargo":"Procurador","lotacao":"PROCURADORIA DE PREVIDENCIA FUNCIONAL - PPF","cidade":"Curitiba","ato_formal":"SEAP-DEC-02045/23052000","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-6151.29,"imposto_renda":-9482.55,"outros_descontos":-317.42},{"nome":"MARIA LUCIA SANCHES","cargo":"Advogado","lotacao":"PROCURADORIA REGIONAL DE MARINGA","cidade":"Maringá","ato_formal":"UEM-POR-00.253/14121990","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":2500.0,"indice_verbas_ind":0.053919,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-5858.37,"imposto_renda":-10598.78,"outros_descontos":-252.42},{"nome":"FELIPE BARRETO FRIAS","cargo":"Procurador","lotacao":"ASSESSORIA TÉCNICA - AT","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":43937.76,"funcao_confianca":8787.55,"redutor_salarial":-6359.12,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":11773.24,"indice_verbas_ind":0.253919,"limitacao":0,"auxilio_saude":4636.61,"contrib_previdenciaria":-6151.29,"imposto_renda":-10098.23,"outros_descontos":-2.42},{"nome":"MARINA CODAZZI DA COSTA","cargo":"Procurador","lotacao":"PROCURADORIA DE AÇÕES COLETIVAS - PAC","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":45902.4,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":463.79,"verbas_indenizatorias":10227.7,"indice_verbas_ind":0.220585,"limitacao":0,"auxilio_saude":4636.57,"contrib_previdenciaria":-5908.65,"imposto_renda":-9020.54,"outros_descontos":-2.42},{"nome":"MIGUEL RAMOS CAMPOS","cargo":"Procurador","lotacao":"PROCURADORIA DO PATRIMONIO - PRP","cidade":"Curitiba","ato_formal":"SEAP-DEC-00234/02021995","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4584.04,"contrib_previdenciaria":-6151.29,"imposto_renda":-9378.27,"outros_descontos":-2.42},{"nome":"LARA RAITANI BLEY PEREIRA","cargo":"Procurador","lotacao":"PROCURADORIA DA DÍVIDA ATIVA - PDA","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4559.24,"contrib_previdenciaria":-5551.54,"imposto_renda":-8365.13,"outros_descontos":-2.42},{"nome":"BRUNO ASSONI","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":41740.87,"funcao_confianca":6590.66,"redutor_salarial":-1965.34,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":4515.11,"contrib_previdenciaria":-5843.72,"imposto_renda":-10130.67,"outros_descontos":-2.42},{"nome":"CARLOS EDUARDO RANGEL XAVIER","cargo":"Procurador","lotacao":"PROCURADORIA DE EXECUCOES PRECATORIOS E CALCULOS","cidade":"Curitiba","ato_formal":"CC-DEC-03.451/24092008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":13318.78,"indice_verbas_ind":0.287252,"limitacao":0,"auxilio_saude":4435.04,"contrib_previdenciaria":-5843.72,"imposto_renda":-8806.57,"outros_descontos":-3941.4},{"nome":"CLAUDIA DE SOUZA HAUS","cargo":"Procurador","lotacao":"PROCURADORIA ADMINISTRATIVA - PRA","cidade":"Curitiba","ato_formal":"SEAP-DEC-06560/08021990","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":6151.29,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4416.85,"contrib_previdenciaria":-6151.29,"imposto_renda":-11174.15,"outros_descontos":-2.42},{"nome":"EDUARDO LUIZ BUSATTA","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE CASCAVEL","cidade":"Cascavel","ato_formal":"PGE-DEC-02.074/22012008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":4378.06,"contrib_previdenciaria":-5843.72,"imposto_renda":-9871.71,"outros_descontos":0},{"nome":"MARLON DE LIMA CANTERI","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE CAMPO MOURAO","cidade":"Campo Mourão","ato_formal":"SEAP-DEC-00279/31012003","remuneracao":43937.76,"funcao_confianca":3075.64,"redutor_salarial":-647.21,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":4371.33,"contrib_previdenciaria":-6151.29,"imposto_renda":-10098.23,"outros_descontos":-317.42},{"nome":"DEBORA FRANCO DE GODOY ANDREIS","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"SEAP-DEC-06560/08021990","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":6151.29,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4318.06,"contrib_previdenciaria":-6151.29,"imposto_renda":-11174.15,"outros_descontos":-2.42},{"nome":"CRISTINA BICHELS LEITAO","cargo":"Procurador","lotacao":"PROCURADORIA ADMINISTRATIVA - PRA","cidade":"Curitiba","ato_formal":"SEAP-DEC-02045/23052000","remuneracao":43937.76,"funcao_confianca":6590.66,"redutor_salarial":-4162.23,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":11773.24,"indice_verbas_ind":0.253919,"limitacao":0,"auxilio_saude":4288.6,"contrib_previdenciaria":-6151.29,"imposto_renda":-10046.09,"outros_descontos":-9903.64},{"nome":"BERNARDO DE FARIAS MARTINS","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"PGE-DEC-06.044/30012017","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4287.22,"contrib_previdenciaria":-5273.96,"imposto_renda":-7948.35,"outros_descontos":-2.42},{"nome":"TAIS LAVEZO FERREIRA DE ALMEIDA","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE PARANAVAI","cidade":"Paranavaí","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":43290.55,"funcao_confianca":3075.64,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":4272.59,"contrib_previdenciaria":-5804.76,"imposto_renda":-9638.7,"outros_descontos":-2.42},{"nome":"ALISSON LUIZ NICHEL","cargo":"Procurador","lotacao":"PROCURADORIA DE EXECUCOES PRECATORIOS E CALCULOS","cidade":"Curitiba","ato_formal":"PGE-DEC-02.710/10092019","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":7918.48,"indice_verbas_ind":0.170781,"limitacao":0,"auxilio_saude":4247.56,"contrib_previdenciaria":-5273.96,"imposto_renda":-8000.49,"outros_descontos":-2.42},{"nome":"ANA ELISA PEREZ SOUZA CAMARGO","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE UMUARAMA","cidade":"Umuarama","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4225.41,"contrib_previdenciaria":-5639.19,"imposto_renda":-8513.2,"outros_descontos":-9823.09},{"nome":"LAURA ROSA DA FONSECA","cargo":"Procurador","lotacao":"PROCURADORIA DO CONTENCIOSO FISCAL - PCF","cidade":"Curitiba","ato_formal":"SEAP-DEC-04782/01031989","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":14644.46,"abono_permanencia":6151.29,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4217.57,"contrib_previdenciaria":-6151.29,"imposto_renda":-14125.67,"outros_descontos":-2.42},{"nome":"THIAGO LUCHETTI KRUG","cargo":"Procurador","lotacao":"COORDENADORIA DO PASSIVO - CPAS","cidade":"Curitiba","ato_formal":"PGE-DEC-12.044/26112025","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":4214.39,"contrib_previdenciaria":-3508.1,"imposto_renda":-7915.99,"outros_descontos":-4.84},{"nome":"ARNALDO MORO FILHO","cargo":"Procurador","lotacao":"PROCURADORIA DO PATRIMONIO - PRP","cidade":"Curitiba","ato_formal":"SEAP-DEC-02305/19011988","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":6151.29,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4171.37,"contrib_previdenciaria":-6151.29,"imposto_renda":-11122.02,"outros_descontos":-2.42},{"nome":"RAFAELA ALMEIDA DO AMARAL MORO DOMINGOS","cargo":"Procurador","lotacao":"PROCURADORIA FUNCIONAL - PRF","cidade":"Curitiba","ato_formal":"SEAP-DEC-05999/23072002","remuneracao":46226.7,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":119.96,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4141.02,"contrib_previdenciaria":-6151.29,"imposto_renda":-9515.54,"outros_descontos":-2.42},{"nome":"CIBELLE DIANA MAPELLI CORRAL BOIA","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE LONDRINA","cidade":"Londrina","ato_formal":"SEAP-DEC-02046/23052000","remuneracao":45808.25,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":479.83,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":4076.21,"contrib_previdenciaria":-6151.29,"imposto_renda":-9510.23,"outros_descontos":-2.42},{"nome":"ADRIANA MIKRUT RIBEIRO DE GODOY","cargo":"Procurador","lotacao":"PROCURADORIA DA DÍVIDA ATIVA - PDA","cidade":"Curitiba","ato_formal":"SEAP-DEC-00234/02021995","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":2500.0,"indice_verbas_ind":0.053919,"limitacao":0,"auxilio_saude":4051.59,"contrib_previdenciaria":-6151.29,"imposto_renda":-9378.27,"outros_descontos":-317.42},{"nome":"JULIO DA COSTA ROSTIROLA AVEIRO","cargo":"Procurador","lotacao":"COORDENADORIA JUDICIAL - CJUD","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":41740.87,"funcao_confianca":8787.55,"redutor_salarial":-4162.23,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":11773.24,"indice_verbas_ind":0.253919,"limitacao":0,"auxilio_saude":4040.74,"contrib_previdenciaria":-5843.72,"imposto_renda":-10130.67,"outros_descontos":-2.42},{"nome":"ANAMARIA BATISTA","cargo":"Procurador","lotacao":"PROCURADORIA TRABALHISTA - PRT","cidade":"Curitiba","ato_formal":"SEAP-DEC-00279/31012003","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":3926.27,"contrib_previdenciaria":-6151.29,"imposto_renda":-9482.55,"outros_descontos":-3199.52},{"nome":"FABIANE CRISTINA SENISKI","cargo":"Procurador","lotacao":"PROCURADORIA DO CONTENCIOSO FISCAL - PCF","cidade":"Curitiba","ato_formal":"SEAP-DEC-05999/23072002","remuneracao":43937.76,"funcao_confianca":6590.66,"redutor_salarial":-4162.23,"gratificacoes":0,"ferias":15453.85,"abono_permanencia":0,"revisoes":239.91,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":3893.43,"contrib_previdenciaria":-6151.29,"imposto_renda":-13338.31,"outros_descontos":-317.42},{"nome":"DANILO FABIANO FINZETTO","cargo":"Advogado","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"SEAP-RES-00387/27041982","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":3828.25,"contrib_previdenciaria":-5858.37,"imposto_renda":-10546.64,"outros_descontos":-73.42},{"nome":"LARISSA NEGREIROS LIMA DE CASTRO","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE CONCESSOES CONVENIOS E PARCERIAS","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":7136.62,"indice_verbas_ind":0.153919,"limitacao":0,"auxilio_saude":3815.22,"contrib_previdenciaria":-5273.96,"imposto_renda":-7948.35,"outros_descontos":-9319.38},{"nome":"STEFANIA BASSO RAMOS","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"PGE-DEC-08.256/03092010","remuneracao":45780.35,"funcao_confianca":585.84,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":11773.24,"indice_verbas_ind":0.253919,"limitacao":0,"auxilio_saude":3815.19,"contrib_previdenciaria":-5551.54,"imposto_renda":-8578.37,"outros_descontos":-2.42},{"nome":"LEANDRO JOSE CABULON","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE LONDRINA","cidade":"Londrina","ato_formal":"SEAP-DEC-03560/10092004","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":10227.7,"indice_verbas_ind":0.220585,"limitacao":0,"auxilio_saude":3781.07,"contrib_previdenciaria":-5843.72,"imposto_renda":-8910.85,"outros_descontos":-2.42},{"nome":"FRANCINE HOELZ BALBI ROMAO DE OLIVEIRA","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":3754.68,"contrib_previdenciaria":-5551.54,"imposto_renda":-8469.4,"outros_descontos":-2.42},{"nome":"DIOGO LUIZ CORDEIRO RODRIGUES","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE CONCESSOES CONVENIOS E PARCERIAS","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":45901.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":465.0,"verbas_indenizatorias":10227.7,"indice_verbas_ind":0.220585,"limitacao":0,"auxilio_saude":3727.85,"contrib_previdenciaria":-5814.5,"imposto_renda":-9041.5,"outros_descontos":-2.42},{"nome":"EMILIO SAMUEL NOVAIS SANTOS","cargo":"Procurador","lotacao":"PROCURADORIA FUNCIONAL - PRF","cidade":"Curitiba","ato_formal":"PGE-DEC-04.123/23052016","remuneracao":39775.53,"funcao_confianca":6590.66,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":3688.64,"contrib_previdenciaria":-5273.96,"imposto_renda":-9760.79,"outros_descontos":-2.42},{"nome":"FABIANO HALUCH MAOSKI","cargo":"Procurador","lotacao":"PROCURADORIA DO CONTENCIOSO FISCAL - PCF","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":46233.68,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":176.67,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":3632.89,"contrib_previdenciaria":-5862.27,"imposto_renda":-8012.91,"outros_descontos":-3002.42},{"nome":"LEANDRO PETRY PEDRO","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE CASCAVEL","cidade":"Cascavel","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":45384.91,"funcao_confianca":102.52,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":878.76,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":3611.83,"contrib_previdenciaria":-5551.54,"imposto_renda":-9647.98,"outros_descontos":0},{"nome":"RAFAEL AUGUSTO SILVA DOMINGUES","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE LONDRINA","cidade":"Londrina","ato_formal":"SEAP-DEC-01055/14042003","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":3577.45,"contrib_previdenciaria":-5843.72,"imposto_renda":-8858.71,"outros_descontos":-2.42},{"nome":"GUILHERME HENRIQUE HAMADA","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":7136.62,"indice_verbas_ind":0.153919,"limitacao":0,"auxilio_saude":3515.37,"contrib_previdenciaria":-5785.28,"imposto_renda":-8760.0,"outros_descontos":-2.42},{"nome":"EVERSON DA SILVA BIAZON","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE CONCESSOES CONVENIOS E PARCERIAS","cidade":"Curitiba","ato_formal":"PGE-DEC-11.921/06122018","remuneracao":46096.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":270.0,"verbas_indenizatorias":13318.78,"indice_verbas_ind":0.287252,"limitacao":0,"auxilio_saude":3493.71,"contrib_previdenciaria":-5551.54,"imposto_renda":-8491.51,"outros_descontos":-2.42},{"nome":"PEDRO JUCA DE OLIVEIRA","cargo":"Procurador","lotacao":"PROCURADORIA DE AÇÕES COLETIVAS - PAC","cidade":"Curitiba","ato_formal":"PGE-DEC-11.262/05102018","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":3470.36,"contrib_previdenciaria":-5514.53,"imposto_renda":-8406.88,"outros_descontos":-2.42},{"nome":"AUDREY SILVA KYT","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":45836.15,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":13912.23,"abono_permanencia":0,"revisoes":530.04,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":3438.21,"contrib_previdenciaria":-5917.92,"imposto_renda":-11522.71,"outros_descontos":-2.42},{"nome":"MAURO RIBEIRO BORGES","cargo":"Advogado","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"SEAP-POR-99999/02011984","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":13318.78,"indice_verbas_ind":0.287252,"limitacao":0,"auxilio_saude":3406.76,"contrib_previdenciaria":-5858.37,"imposto_renda":-10494.51,"outros_descontos":-9887.75},{"nome":"FABIANA YAMAOKA FRARE","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE MARINGA","cidade":"Maringá","ato_formal":"PGE-DEC-07.433/16062010","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":3392.06,"contrib_previdenciaria":-5551.54,"imposto_renda":-8417.26,"outros_descontos":-2.42},{"nome":"MARINA CERQUEIRA LEITE DE FREITAS LUIS","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"SEAP-DEC-05999/23072002","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":3357.12,"contrib_previdenciaria":-5843.72,"imposto_renda":-8910.85,"outros_descontos":-2.42},{"nome":"KAREM OLIVEIRA","cargo":"Procurador","lotacao":"COORDENADORIA JUDICIAL - CJUD","cidade":"Curitiba","ato_formal":"SEAP-DEC-02573/29091993","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":3292.84,"contrib_previdenciaria":-6151.29,"imposto_renda":-9482.55,"outros_descontos":-2.42},{"nome":"LILIAN DIDONE","cargo":"Procurador","lotacao":"PROCURADORIA DO CONTENCIOSO FISCAL - PCF","cidade":"Curitiba","ato_formal":"SEAP-DEC-02573/29091993","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":6151.29,"revisoes":0,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":3263.21,"contrib_previdenciaria":-6151.29,"imposto_renda":-11122.02,"outros_descontos":-2.42},{"nome":"ALBA REGINA GRASSETTI PACHECO","cargo":"Advogado","lotacao":"PROCURADORIA REGIONAL DE MARINGA","cidade":"Maringá","ato_formal":"UEM-POR-00.986/03101988","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":2500.0,"indice_verbas_ind":0.053919,"limitacao":0,"auxilio_saude":3240.89,"contrib_previdenciaria":-5858.37,"imposto_renda":-10598.78,"outros_descontos":-3072.55},{"nome":"MARIANA CRISTINA BARTNACK","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE PONTA GROSSA","cidade":"Ponta Grossa","ato_formal":"PGE-DEC-02.263/18082011","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":3236.43,"contrib_previdenciaria":-5551.54,"imposto_renda":-8469.4,"outros_descontos":-2249.53},{"nome":"MARCELO CESAR MACIEL","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE FOZ DO IGUACU","cidade":"Foz do Iguaçu","ato_formal":"SEAP-DEC-01055/14042003","remuneracao":43937.76,"funcao_confianca":3075.64,"redutor_salarial":-647.21,"gratificacoes":0,"ferias":530.45,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":7136.62,"indice_verbas_ind":0.153919,"limitacao":0,"auxilio_saude":3228.96,"contrib_previdenciaria":-6151.29,"imposto_renda":-10098.23,"outros_descontos":-317.42},{"nome":"VALIANA WARGHA CALLIARI","cargo":"Procurador","lotacao":"PROCURADORIA DA DÍVIDA ATIVA - PDA","cidade":"Curitiba","ato_formal":"SEAP-DEC-01798/20051996","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":14644.46,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":3168.06,"contrib_previdenciaria":-6151.29,"imposto_renda":-12329.79,"outros_descontos":-2.42},{"nome":"HELOISA BOT BORGES","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"SEAP-DEC-05999/23072002","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":3146.71,"contrib_previdenciaria":-6151.29,"imposto_renda":-9378.27,"outros_descontos":-317.42},{"nome":"CARLOS YOSHIHIRO SAKIYAMA","cargo":"Advogado","lotacao":"PROCURADORIA REGIONAL DE MARINGA","cidade":"Maringá","ato_formal":"SEAP-RESCON-00.004/04052022","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":2500.0,"indice_verbas_ind":0.053919,"limitacao":0,"auxilio_saude":3141.93,"contrib_previdenciaria":-5858.37,"imposto_renda":-10494.51,"outros_descontos":-323.42},{"nome":"MARCIA DANIELA CANASSA GIULIANGELLI","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE CAMPO MOURAO","cidade":"Campo Mourão","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":3074.21,"contrib_previdenciaria":-6151.29,"imposto_renda":-9378.27,"outros_descontos":-2322.92},{"nome":"DANIEL MATOS MARTINS","cargo":"Procurador","lotacao":"COORDENADORIA DE GESTÃO ESTRATÉGICA E TEC. DA INFORMAÇÃO-CGTI","cidade":"Curitiba","ato_formal":"PGE-DEC-05.975/19012017","remuneracao":39653.83,"funcao_confianca":8787.55,"redutor_salarial":-2075.19,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":188.83,"verbas_indenizatorias":10227.7,"indice_verbas_ind":0.220585,"limitacao":0,"auxilio_saude":3065.13,"contrib_previdenciaria":-5577.97,"imposto_renda":-10255.68,"outros_descontos":-2.42},{"nome":"LUCIANO TINOCO MARCHESINI","cargo":"Advogado","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"SEAP-POR-00055/30061988","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":11488.24,"indice_verbas_ind":0.247772,"limitacao":0,"auxilio_saude":3000.0,"contrib_previdenciaria":-5858.37,"imposto_renda":-10598.78,"outros_descontos":-252.42},{"nome":"RICARDO DE MATTOS DO NASCIMENTO","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE CONCESSOES CONVENIOS E PARCERIAS","cidade":"Curitiba","ato_formal":"PGE-DEC-04.123/23052016","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":7136.62,"indice_verbas_ind":0.153919,"limitacao":0,"auxilio_saude":2997.64,"contrib_previdenciaria":-5449.76,"imposto_renda":-8141.06,"outros_descontos":-2.42},{"nome":"MATEUS OLIVEIRA DE CASTRO","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE LONDRINA","cidade":"Londrina","ato_formal":"PGE-DEC-11.262/05102018","remuneracao":44843.01,"funcao_confianca":1230.26,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":292.92,"verbas_indenizatorias":7136.62,"indice_verbas_ind":0.153919,"limitacao":0,"auxilio_saude":2961.63,"contrib_previdenciaria":-5273.96,"imposto_renda":-8262.95,"outros_descontos":-2.42},{"nome":"JOE TENNYSON VELO","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"SEAP-DEC-02305/19011988","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":2949.53,"contrib_previdenciaria":-6151.29,"imposto_renda":-9430.41,"outros_descontos":-2.42},{"nome":"RAFAEL SOARES LEITE","cargo":"Procurador","lotacao":"ASSESSORIA TÉCNICA - AT","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":43937.76,"funcao_confianca":8787.55,"redutor_salarial":-6359.12,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":13318.78,"indice_verbas_ind":0.287252,"limitacao":0,"auxilio_saude":2918.92,"contrib_previdenciaria":-6151.29,"imposto_renda":-10046.09,"outros_descontos":-2.42},{"nome":"ARTHUR SOMBRA SALES CAMPOS","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"PGE-DEC-04.123/23052016","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":13318.78,"indice_verbas_ind":0.287252,"limitacao":0,"auxilio_saude":2873.89,"contrib_previdenciaria":-5273.96,"imposto_renda":-8000.49,"outros_descontos":-2.42},{"nome":"MANUELA DOREA LEAL VITA","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":2849.59,"contrib_previdenciaria":-5551.54,"imposto_renda":-8417.26,"outros_descontos":-2.42},{"nome":"HELDO GUGELMIN CUNHA","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE UNIAO DA VITORIA","cidade":"União da Vitória","ato_formal":"PGE-DEC-08.256/03092010","remuneracao":43290.55,"funcao_confianca":3075.64,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":2839.88,"contrib_previdenciaria":-5678.15,"imposto_renda":-9424.81,"outros_descontos":-2.42},{"nome":"JULIANA TAVARES LIRA","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":2835.13,"contrib_previdenciaria":-5551.54,"imposto_renda":-8469.4,"outros_descontos":-2.42},{"nome":"ALEXANDRE BARBOSA DA SILVA","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE CASCAVEL","cidade":"Cascavel","ato_formal":"SEAP-DEC-01798/20051996","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":2806.84,"contrib_previdenciaria":-6151.29,"imposto_renda":-9482.55,"outros_descontos":-317.42},{"nome":"CHRISTIANNE REGINA LEANDRO POSFALDO","cargo":"Procurador","lotacao":"PROCURADORIA DA DÍVIDA ATIVA - PDA","cidade":"Curitiba","ato_formal":"SEAP-DEC-01798/20051996","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":2758.07,"contrib_previdenciaria":-6151.29,"imposto_renda":-9378.27,"outros_descontos":-12591.54},{"nome":"LUIZ HENRIQUE LAGEDO FERRAZ","cargo":"Procurador","lotacao":"PROCURADORIA DE EXECUCOES PRECATORIOS E CALCULOS","cidade":"Curitiba","ato_formal":"PGE-DEC-04.123/23052016","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":2714.69,"contrib_previdenciaria":-5273.96,"imposto_renda":-8000.49,"outros_descontos":-2885.18},{"nome":"DANIEL LEITE RIBEIRO","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"PGE-DEC-02.710/10092019","remuneracao":39775.53,"funcao_confianca":6590.66,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":2647.92,"contrib_previdenciaria":-5440.51,"imposto_renda":-10094.27,"outros_descontos":-2.42},{"nome":"BRUNO LUIZ SAPIA MAXIMO","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE LONDRINA","cidade":"Londrina","ato_formal":"PGE-DEC-08.496/14122017","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":2612.48,"contrib_previdenciaria":-5273.96,"imposto_renda":-8000.49,"outros_descontos":-2.42},{"nome":"CAROLINA VILLENA GINI","cargo":"Procurador","lotacao":"PROCURADORIA FUNCIONAL - PRF","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":7136.62,"indice_verbas_ind":0.153919,"limitacao":0,"auxilio_saude":2608.7,"contrib_previdenciaria":-5551.54,"imposto_renda":-8469.4,"outros_descontos":-2.42},{"nome":"ELSA CRISTINA ALMEIDA DA SILVA CERQUEIRA GALVAO MARCHIOTTO","cargo":"Advogado","lotacao":"PROCURADORIA AMBIENTAL - PAM","cidade":"Curitiba","ato_formal":"UEM-POR-00.798/05101988","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":2588.22,"contrib_previdenciaria":-5858.37,"imposto_renda":-10546.64,"outros_descontos":-12209.02},{"nome":"ALLYSON MARTINS COELHO","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"PGE-DEC-02.710/10092019","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":14864.32,"indice_verbas_ind":0.320585,"limitacao":0,"auxilio_saude":2506.54,"contrib_previdenciaria":-5273.96,"imposto_renda":-7948.35,"outros_descontos":-8948.5},{"nome":"CAMILA NUNES ESPERIDIAO FERNANDES","cargo":"Procurador","lotacao":"PROCURADORIA DA DÍVIDA ATIVA - PDA","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":2419.29,"contrib_previdenciaria":-5523.78,"imposto_renda":-8318.24,"outros_descontos":-2.42},{"nome":"LEONARDO FELIPE BRITO RAMOS","cargo":"Procurador","lotacao":"PROCURADORIA DO CONTENCIOSO FISCAL - PCF","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":7136.62,"indice_verbas_ind":0.153919,"limitacao":0,"auxilio_saude":2409.16,"contrib_previdenciaria":-5551.54,"imposto_renda":-8469.4,"outros_descontos":-2.42},{"nome":"ANTONIO SERGIO BIONE PINHEIRO","cargo":"Procurador","lotacao":"PROCURADORIA AMBIENTAL - PAM","cidade":"Curitiba","ato_formal":"PGE-DEC-05.975/19012017","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":2386.68,"contrib_previdenciaria":-5366.48,"imposto_renda":-8156.8,"outros_descontos":-2.42},{"nome":"RITA DE CASSIA LOPES DA SILVA","cargo":"Advogado","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"UEM-POR-00.254/14121990","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":2328.36,"contrib_previdenciaria":-5858.37,"imposto_renda":-10598.78,"outros_descontos":-1342.49},{"nome":"ANA CECILIA DOS SANTOS SIMOES PACANARO","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE MARINGA","cidade":"Maringá","ato_formal":"PGE-DEC-04.743/15052009","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":2317.63,"contrib_previdenciaria":-5551.54,"imposto_renda":-8417.26,"outros_descontos":-2.42},{"nome":"ERNANDES FERNANDES DA NOBREGA JUNIOR","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE GUARAPUAVA","cidade":"Guarapuava","ato_formal":"PGE-DEC-03.152/22102019","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":2279.49,"contrib_previdenciaria":-5273.96,"imposto_renda":-7896.22,"outros_descontos":-2.42},{"nome":"LUCIANA DA CUNHA BARBATO OLIVEIRA","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"PGE-DEC-04.123/23052016","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":2216.15,"contrib_previdenciaria":-5505.27,"imposto_renda":-8391.25,"outros_descontos":-2.42},{"nome":"PAULA SCHMITZ DE SCHMITZ","cargo":"Procurador","lotacao":"COORDENADORIA DO PASSIVO - CPAS","cidade":"Curitiba","ato_formal":"SEAP-DEC-00279/31012003","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":11773.24,"indice_verbas_ind":0.253919,"limitacao":0,"auxilio_saude":2183.74,"contrib_previdenciaria":-6151.29,"imposto_renda":-9430.41,"outros_descontos":-317.42},{"nome":"ISABELA CRISTINE MARTINS RAMOS","cargo":"Procurador","lotacao":"PROCURADORIA DE PREVIDENCIA FUNCIONAL - PPF","cidade":"Curitiba","ato_formal":"SEAP-DEC-01798/20051996","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":14644.46,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":2159.0,"contrib_previdenciaria":-6151.29,"imposto_renda":-12434.07,"outros_descontos":-7079.87},{"nome":"CLAUDIA PICOLO","cargo":"Procurador","lotacao":"PROCURADORIA DA DÍVIDA ATIVA - PDA","cidade":"Curitiba","ato_formal":"PGE-DEC-03.588/10102008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":2138.58,"contrib_previdenciaria":-5551.54,"imposto_renda":-8469.4,"outros_descontos":-2.42},{"nome":"PAULO ROBERTO MOREIRA GOMES JUNIOR","cargo":"Procurador","lotacao":"PESSOAL A DISPOSICAO","cidade":"Curitiba","ato_formal":"SEAP-DEC-01798/20051996","remuneracao":11591.55,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":2500.0,"indice_verbas_ind":0.053919,"limitacao":0,"auxilio_saude":2126.57,"contrib_previdenciaria":0,"imposto_renda":0,"outros_descontos":0},{"nome":"DIOGO DA ROS GASPARIN","cargo":"Procurador","lotacao":"PROCURADORIA DO CONTENCIOSO FISCAL - PCF","cidade":"Curitiba","ato_formal":"PGE-DEC-08.256/03092010","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":2095.59,"contrib_previdenciaria":-5551.54,"imposto_renda":-8469.4,"outros_descontos":-5403.83},{"nome":"PAULO SERGIO ROSSO","cargo":"Procurador","lotacao":"PROCURADORIA FUNCIONAL - PRF","cidade":"Curitiba","ato_formal":"SEAP-DEC-00279/31012003","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":7136.62,"indice_verbas_ind":0.153919,"limitacao":0,"auxilio_saude":2078.56,"contrib_previdenciaria":-6151.29,"imposto_renda":-9482.55,"outros_descontos":-2.42},{"nome":"ANDERSON PETRIN","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE GUARAPUAVA","cidade":"Guarapuava","ato_formal":"PGE-DEC-04.123/23052016","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":2062.48,"contrib_previdenciaria":-5273.96,"imposto_renda":-7948.35,"outros_descontos":-2.42},{"nome":"LEILA APARECIDA FERREIRA","cargo":"Advogado","lotacao":"PROCURADORIA REGIONAL DE MARINGA","cidade":"Maringá","ato_formal":"PGE-PORT-00.511/05081985","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":2500.0,"indice_verbas_ind":0.053919,"limitacao":0,"auxilio_saude":2029.63,"contrib_previdenciaria":-5858.37,"imposto_renda":-10546.64,"outros_descontos":-10659.53},{"nome":"MARCO ANTONIO LIMA BERBERI","cargo":"Procurador","lotacao":"COORDENADORIA DO CONSULTIVO - CCON","cidade":"Curitiba","ato_formal":"SEAP-DEC-01798/20051996","remuneracao":43937.76,"funcao_confianca":8787.55,"redutor_salarial":-6359.12,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":11773.24,"indice_verbas_ind":0.253919,"limitacao":0,"auxilio_saude":1999.02,"contrib_previdenciaria":-6151.29,"imposto_renda":-10046.09,"outros_descontos":-273.26},{"nome":"THIAGO SIMOES PESSOA","cargo":"Procurador","lotacao":"PROCURADORIA DE EXECUCOES PRECATORIOS E CALCULOS","cidade":"Curitiba","ato_formal":"PGE-DEC-04.123/23052016","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":1998.95,"contrib_previdenciaria":-5273.96,"imposto_renda":-8000.49,"outros_descontos":-2.42},{"nome":"VICTOR AUGUSTO LIMA DE PAULA","cargo":"Procurador","lotacao":"PROCURADORIA TRABALHISTA - PRT","cidade":"Curitiba","ato_formal":"PGE-DEC-04.123/23052016","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":1965.01,"contrib_previdenciaria":-5551.54,"imposto_renda":-8365.13,"outros_descontos":-2.42},{"nome":"ANDRE LUIZ KURTZ","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE CASCAVEL","cidade":"Cascavel","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":43227.61,"funcao_confianca":3075.64,"redutor_salarial":0,"gratificacoes":0,"ferias":12934.19,"abono_permanencia":0,"revisoes":83.92,"verbas_indenizatorias":10227.7,"indice_verbas_ind":0.220585,"limitacao":0,"auxilio_saude":1960.11,"contrib_previdenciaria":-5560.35,"imposto_renda":-11707.0,"outros_descontos":-2.42},{"nome":"FELIPE SOLANO MOREIRA MONTEIRO DA FRANCA","cargo":"Procurador","lotacao":"PROCURADORIA DA DÍVIDA ATIVA - PDA","cidade":"Curitiba","ato_formal":"PGE-DEC-03.152/22102019","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":1920.28,"contrib_previdenciaria":-5273.96,"imposto_renda":-7896.22,"outros_descontos":-488.27},{"nome":"CASSIANO ANDRE KAMINSKI","cargo":"Procurador","lotacao":"PROCURADORIA DA DÍVIDA ATIVA - PDA","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":46167.42,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":198.77,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":1868.65,"contrib_previdenciaria":-5871.54,"imposto_renda":-9010.0,"outros_descontos":-2.42},{"nome":"FERNANDO BARRETTO GIRAO","cargo":"Procurador","lotacao":"PROCURADORIA DE AÇÕES COLETIVAS - PAC","cidade":"Curitiba","ato_formal":"PGE-DEC-05.975/19012017","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":12555.79,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":1856.47,"contrib_previdenciaria":-5273.96,"imposto_renda":-10325.48,"outros_descontos":-2.42},{"nome":"ROBERTO ALTHEIM","cargo":"Procurador","lotacao":"PROCURADORIA DO PATRIMONIO - PRP","cidade":"Curitiba","ato_formal":"SEAP-DEC-05999/23072002","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":1849.14,"contrib_previdenciaria":-6151.29,"imposto_renda":-9378.27,"outros_descontos":-317.42},{"nome":"ILIAN LOPES VASCONCELOS","cargo":"Advogado","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"SEAP-POR-00015/20041979","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":1789.81,"contrib_previdenciaria":-5858.37,"imposto_renda":-10598.78,"outros_descontos":-252.42},{"nome":"ANNETTE MACEDO SKARBEK","cargo":"Procurador","lotacao":"PROCURADORIA TRABALHISTA - PRT","cidade":"Curitiba","ato_formal":"SEAP-DEC-02305/19011988","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":6151.29,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":1724.78,"contrib_previdenciaria":-6151.29,"imposto_renda":-11174.15,"outros_descontos":-317.42},{"nome":"LUCIANE CAMARGO KUJO MONTEIRO","cargo":"Procurador","lotacao":"PROCURADORIA DA DÍVIDA ATIVA - PDA","cidade":"Curitiba","ato_formal":"SEAP-DEC-02573/29091993","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":1679.07,"contrib_previdenciaria":-6151.29,"imposto_renda":-9482.55,"outros_descontos":-2.42},{"nome":"JULIANO RIBAS DEA","cargo":"Procurador","lotacao":"PROCURADORIA DE AÇÕES COLETIVAS - PAC","cidade":"Curitiba","ato_formal":"CC-DEC-04.172/21012009","remuneracao":39775.53,"funcao_confianca":6590.66,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":-140.6,"verbas_indenizatorias":10227.7,"indice_verbas_ind":0.220585,"limitacao":0,"auxilio_saude":1636.06,"contrib_previdenciaria":-5551.54,"imposto_renda":-10229.69,"outros_descontos":-2.42},{"nome":"DANIELE BEATRIZ MARCONATO","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE CASCAVEL","cidade":"Cascavel","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":1615.19,"contrib_previdenciaria":-5551.54,"imposto_renda":-8365.13,"outros_descontos":-2.42},{"nome":"LILIAM FATIMA MORO NOVAK","cargo":"Procurador","lotacao":"PROCURADORIA TRABALHISTA - PRT","cidade":"Curitiba","ato_formal":"SEAP-DEC-04084/28081981","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":6151.29,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":1582.36,"contrib_previdenciaria":-6151.29,"imposto_renda":-11174.15,"outros_descontos":-2.42},{"nome":"ITALO MEDEIROS CISNEIROS","cargo":"Procurador","lotacao":"PROCURADORIA DE EXECUCOES PRECATORIOS E CALCULOS","cidade":"Curitiba","ato_formal":"PGE-DEC-05.204/30092016","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":14864.32,"indice_verbas_ind":0.320585,"limitacao":0,"auxilio_saude":1570.7,"contrib_previdenciaria":-5384.99,"imposto_renda":-8135.92,"outros_descontos":-2.42},{"nome":"RAUL ANIZ ASSAD","cargo":"Procurador","lotacao":"PROCURADORIA TRABALHISTA - PRT","cidade":"Curitiba","ato_formal":"SEAP-DEC-04782/01031989","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":1530.0,"contrib_previdenciaria":-6151.29,"imposto_renda":-9482.55,"outros_descontos":-2.42},{"nome":"FERNANDA BERNARDO GONCALVES","cargo":"Procurador","lotacao":"GABINETE DO PROCURADOR-GERAL DO ESTADO - GP","cidade":"Curitiba","ato_formal":"PGE-DEC-08.256/03092010","remuneracao":40071.24,"funcao_confianca":8787.55,"redutor_salarial":-2492.6,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":11773.24,"indice_verbas_ind":0.253919,"limitacao":0,"auxilio_saude":1467.24,"contrib_previdenciaria":-5609.97,"imposto_renda":-10299.23,"outros_descontos":-2.42},{"nome":"GUILHERME FERNANDES PUPO","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE PONTA GROSSA","cidade":"Ponta Grossa","ato_formal":"PGE-DEC-11.262/05102018","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":12555.79,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":1460.0,"contrib_previdenciaria":-5273.96,"imposto_renda":-10213.2,"outros_descontos":-2.42},{"nome":"ANDRE STANCIOLI VAZ DE MELO","cargo":"Procurador","lotacao":"PROCURADORIA DA SAÚDE - PRS","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":1454.68,"contrib_previdenciaria":-5431.25,"imposto_renda":-8214.07,"outros_descontos":-2.42},{"nome":"MARIANA CARVALHO WAIHRICH","cargo":"Procurador","lotacao":"ASSESSORIA TÉCNICA - AT","cidade":"Curitiba","ato_formal":"PGE-DEC-08.256/03092010","remuneracao":39932.1,"funcao_confianca":8787.55,"redutor_salarial":-2353.46,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":11773.24,"indice_verbas_ind":0.253919,"limitacao":0,"auxilio_saude":1450.98,"contrib_previdenciaria":-5590.49,"imposto_renda":-10304.59,"outros_descontos":-2.42},{"nome":"LIANA MARA MAZZA MILICIO","cargo":"Advogado","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"SEAP-POR-99999/01081984","remuneracao":43937.76,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":2500.0,"indice_verbas_ind":0.053919,"limitacao":0,"auxilio_saude":1289.18,"contrib_previdenciaria":-5858.37,"imposto_renda":-10598.78,"outros_descontos":-9564.78},{"nome":"THELMA HAYASHI AKAMINE","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE PONTA GROSSA","cidade":"Ponta Grossa","ato_formal":"SEAP-DEC-00279/31012003","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":7136.62,"indice_verbas_ind":0.153919,"limitacao":0,"auxilio_saude":1287.03,"contrib_previdenciaria":-6151.29,"imposto_renda":-9482.55,"outros_descontos":-2.42},{"nome":"LUCIANO BORGES DOS SANTOS","cargo":"Procurador","lotacao":"GABINETE DO PROCURADOR-GERAL DO ESTADO - GP","cidade":"Curitiba","ato_formal":"","remuneracao":45985.41,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":10857.14,"indice_verbas_ind":0.234161,"limitacao":0,"auxilio_saude":1266.43,"contrib_previdenciaria":-988.07,"imposto_renda":-7465.3,"outros_descontos":0},{"nome":"WILSON CALMON ALVES FILHO","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"PGE-DEC-08.496/14122017","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":1248.4,"contrib_previdenciaria":-5273.96,"imposto_renda":-7896.22,"outros_descontos":-2.42},{"nome":"SERGIO SIMAO DIAS","cargo":"Procurador","lotacao":"PROCURADORIA DE BRASILIA - PRB","cidade":"Curitiba","ato_formal":"SEAP-DEC-00279/31012003","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":12181.74,"indice_verbas_ind":0.262729,"limitacao":0,"auxilio_saude":1229.66,"contrib_previdenciaria":-5843.72,"imposto_renda":-8858.71,"outros_descontos":-2.42},{"nome":"PEDRO HENRIQUE AZEVEDO DE ARAUJO GOES","cargo":"Procurador","lotacao":"PROCURADORIA DA SAÚDE - PRS","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":1212.32,"contrib_previdenciaria":-5375.74,"imposto_renda":-8016.01,"outros_descontos":-2.42},{"nome":"HERMINIO BACK","cargo":"Procurador","lotacao":"PROCURADORIA TRABALHISTA - PRT","cidade":"Curitiba","ato_formal":"SEAP-DEC-02305/19011988","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":14644.46,"abono_permanencia":6151.29,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":1191.39,"contrib_previdenciaria":-6151.29,"imposto_renda":-13881.76,"outros_descontos":-317.42},{"nome":"ADRIANO FREITAS COELHO","cargo":"Procurador","lotacao":"PROCURADORIA DO CONTENCIOSO FISCAL - PCF","cidade":"Curitiba","ato_formal":"PGE-DEC-02.710/10092019","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":12555.79,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":12215.18,"indice_verbas_ind":0.26345,"limitacao":0,"auxilio_saude":1187.82,"contrib_previdenciaria":-5273.96,"imposto_renda":-10377.62,"outros_descontos":-2.42},{"nome":"ERNESTO ALESSANDRO TAVARES","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"PGE-DEC-08.256/03092010","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":1180.09,"contrib_previdenciaria":-5551.54,"imposto_renda":-8469.4,"outros_descontos":-2.42},{"nome":"FABIANA GRASSO FERREIRA DE OLIVEIRA","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE MARINGA","cidade":"Maringá","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":1157.96,"contrib_previdenciaria":-5551.54,"imposto_renda":-8365.13,"outros_descontos":-2.42},{"nome":"ROBERTO BENGHI DEL CLARO","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":1144.04,"contrib_previdenciaria":-5551.54,"imposto_renda":-8365.13,"outros_descontos":-2.42},{"nome":"ANNE CAROLINE CASSOU","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"PGE-DEC-08.256/03092010","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":1119.38,"contrib_previdenciaria":-5551.54,"imposto_renda":-8365.13,"outros_descontos":-2.42},{"nome":"EDUARDO AUGUSTO COSTA SILVA","cargo":"Procurador","lotacao":"COORDENADORIA DE ASSUNTOS FISCAIS - CAF","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":11773.24,"indice_verbas_ind":0.253919,"limitacao":0,"auxilio_saude":1032.69,"contrib_previdenciaria":-5273.96,"imposto_renda":-7896.22,"outros_descontos":-2.42},{"nome":"PAMELA SUELEN DE MORAES GUEDES","cargo":"Procurador","lotacao":"COORDENADORIA DO PASSIVO - CPAS","cidade":"Curitiba","ato_formal":"PGE-DEC-12.044/26112025","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":-2176.67,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":1008.24,"contrib_previdenciaria":-1186.58,"imposto_renda":-8007.96,"outros_descontos":-4.84},{"nome":"GUILHERME RAMOS PAES E LIMA","cargo":"Procurador","lotacao":"PROCURADORIA DO CONTENCIOSO FISCAL - PCF","cidade":"Curitiba","ato_formal":"PGE-DEC-02.710/10092019","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":10227.7,"indice_verbas_ind":0.220585,"limitacao":0,"auxilio_saude":968.02,"contrib_previdenciaria":-5273.96,"imposto_renda":-8000.49,"outros_descontos":-2.42},{"nome":"MARIA MISUE MURATA","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE MARINGA","cidade":"Maringá","ato_formal":"SEAP-DEC-01798/20051996","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":926.26,"contrib_previdenciaria":-6151.29,"imposto_renda":-9482.55,"outros_descontos":-317.42},{"nome":"KAREN MARRA BARBOSA","cargo":"Procurador","lotacao":"PROCURADORIA FUNCIONAL - PRF","cidade":"Curitiba","ato_formal":"PGE-DEC-05.095/27062012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":10227.7,"indice_verbas_ind":0.220585,"limitacao":0,"auxilio_saude":922.37,"contrib_previdenciaria":-5273.96,"imposto_renda":-8000.49,"outros_descontos":-2.42},{"nome":"ULISSES DE VASCONCELOS ORDONES JUNIOR","cargo":"Procurador","lotacao":"PROCURADORIA DE EXECUCOES PRECATORIOS E CALCULOS","cidade":"Curitiba","ato_formal":"PGE-DEC-08.130/26102017","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":911.26,"contrib_previdenciaria":-5273.96,"imposto_renda":-7948.35,"outros_descontos":-2.42},{"nome":"ROBERTO ALEXANDRE HAYAMI MIRANDA","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE MARINGA","cidade":"Maringá","ato_formal":"SEAP-DEC-06264/09092002","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":861.14,"contrib_previdenciaria":-6100.03,"imposto_renda":-9395.95,"outros_descontos":-2.42},{"nome":"HAMILTON BONATTO","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE OBRAS E SERVIÇOS DE ENGENHARIA-PCO","cidade":"Curitiba","ato_formal":"PGE-DEC-08.256/03092010","remuneracao":46141.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":225.0,"verbas_indenizatorias":10227.7,"indice_verbas_ind":0.220585,"limitacao":0,"auxilio_saude":851.52,"contrib_previdenciaria":-6151.29,"imposto_renda":-9492.29,"outros_descontos":-2.42},{"nome":"ANDRE MENDONCA VIEIRA","cargo":"Procurador","lotacao":"PROCURADORIA DA SAÚDE - PRS","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46114.42,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":251.77,"verbas_indenizatorias":11773.24,"indice_verbas_ind":0.253919,"limitacao":0,"auxilio_saude":820.02,"contrib_previdenciaria":-5586.79,"imposto_renda":-8528.94,"outros_descontos":-2.42},{"nome":"RODOLFO FAICAL COUTO","cargo":"Procurador","lotacao":"PROCURADORIA AMBIENTAL - PAM","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":43728.7,"funcao_confianca":2196.89,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":440.6,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":820.02,"contrib_previdenciaria":-5613.22,"imposto_renda":-9125.61,"outros_descontos":-2.42},{"nome":"VITOR ACIR PUPPI STANISLAWCZUK","cargo":"Procurador","lotacao":"COORDENADORIA DE RECURSOS - CRR","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":2500.0,"indice_verbas_ind":0.053919,"limitacao":0,"auxilio_saude":810.09,"contrib_previdenciaria":-5843.72,"imposto_renda":-8962.99,"outros_descontos":-2.42},{"nome":"LEANDRO ROSA NOVO VITA","cargo":"Procurador","lotacao":"PROCURADORIA DA SAÚDE - PRS","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46240.3,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":125.89,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":700.0,"contrib_previdenciaria":-5569.16,"imposto_renda":-8447.04,"outros_descontos":-2.42},{"nome":"MOISES DE ANDRADE","cargo":"Procurador","lotacao":"PROCURADORIA ADMINISTRATIVA - PRA","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":695.19,"contrib_previdenciaria":-5551.54,"imposto_renda":-8365.13,"outros_descontos":-2.42},{"nome":"MURILLO ARAUJO DE ALMEIDA","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE MARINGA","cidade":"Maringá","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":695.19,"contrib_previdenciaria":-5551.54,"imposto_renda":-8417.26,"outros_descontos":-2.42},{"nome":"RAFAEL COSTA SANTOS","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE CONCESSOES CONVENIOS E PARCERIAS","cidade":"Curitiba","ato_formal":"PGE-DEC-05.204/30092016","remuneracao":46299.93,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":66.26,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":654.68,"contrib_previdenciaria":-5852.99,"imposto_renda":-8978.66,"outros_descontos":-2.42},{"nome":"LUIZ ALBERTO BARBOZA","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE MARINGA","cidade":"Maringá","ato_formal":"SEAP-DEC-06264/09092002","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":643.99,"contrib_previdenciaria":-6079.52,"imposto_renda":-9309.18,"outros_descontos":-12303.4},{"nome":"ROBERTO NUNES DE LIMA FILHO","cargo":"Procurador","lotacao":"PROCURADORIA DE EXECUCOES PRECATORIOS E CALCULOS","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":631.23,"contrib_previdenciaria":-6151.29,"imposto_renda":-9482.55,"outros_descontos":-2.42},{"nome":"VINICIUS CALEFFI DE MORAES","cargo":"Procurador","lotacao":"COORDENADORIA JUDICIAL - CJUD","cidade":"Curitiba","ato_formal":"PGE-DEC-12.044/26112025","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":614.79,"contrib_previdenciaria":-5010.26,"imposto_renda":-7555.03,"outros_descontos":-4.84},{"nome":"MILENA STELA MARTINS","cargo":"Procurador","lotacao":"PROCURADORIA DE EXECUCOES PRECATORIOS E CALCULOS","cidade":"Curitiba","ato_formal":"PGE-DEC-10.585/25072018","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":613.2,"contrib_previdenciaria":-5273.96,"imposto_renda":-7948.35,"outros_descontos":-2.42},{"nome":"TAILINE FATIMA HIJAZ","cargo":"Procurador","lotacao":"PROCURADORIA TRABALHISTA - PRT","cidade":"Curitiba","ato_formal":"PGE-DEC-07.873/29092017","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":597.9,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":572.7,"contrib_previdenciaria":-5273.96,"imposto_renda":-8000.49,"outros_descontos":-2.42},{"nome":"JOSE CARLOS MACHADO DE BRITO FILHO","cargo":"Procurador","lotacao":"PROCURADORIA DE AÇÕES COLETIVAS - PAC","cidade":"Curitiba","ato_formal":"PGE-DEC-04.123/23052016","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":570.29,"contrib_previdenciaria":-5273.96,"imposto_renda":-7948.35,"outros_descontos":-2.42},{"nome":"RUHAN JOSEPH MOREIRA RODRIGUES","cargo":"Procurador","lotacao":"PROCURADORIA DO CONTENCIOSO FISCAL - PCF","cidade":"Curitiba","ato_formal":"CC-DEC-12.953/11032026","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":2500.0,"indice_verbas_ind":0.053919,"limitacao":0,"auxilio_saude":561.33,"contrib_previdenciaria":-3508.1,"imposto_renda":-7915.99,"outros_descontos":-4.84},{"nome":"PEDRO HENRIQUE FAVARO BORSATTO","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE LONDRINA","cidade":"Londrina","ato_formal":"PGE-DEC-03.152/22102019","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":13318.78,"indice_verbas_ind":0.287252,"limitacao":0,"auxilio_saude":543.43,"contrib_previdenciaria":-5422.0,"imposto_renda":-8250.58,"outros_descontos":-2.42},{"nome":"JULIO CESAR COSTA SILVA","cargo":"Procurador","lotacao":"PROCURADORIA DE AÇÕES COLETIVAS - PAC","cidade":"Curitiba","ato_formal":"PGE-DEC-04.123/23052016","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":525.08,"contrib_previdenciaria":-5273.96,"imposto_renda":-7948.35,"outros_descontos":-2.42},{"nome":"ISABEL KLUEVER KONESKI ROVERI","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":482.78,"contrib_previdenciaria":-5551.54,"imposto_renda":-8417.26,"outros_descontos":-2.42},{"nome":"DIOGO SALDANHA MACORATI","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE FOZ DO IGUACU","cidade":"Foz do Iguaçu","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":8682.16,"indice_verbas_ind":0.187252,"limitacao":0,"auxilio_saude":470.0,"contrib_previdenciaria":-5551.54,"imposto_renda":-8365.13,"outros_descontos":-2.42},{"nome":"APOENNA AMARAL DE ALENCAR CASTRO","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"PGE-DEC-02.710/10092019","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":7136.62,"indice_verbas_ind":0.153919,"limitacao":0,"auxilio_saude":432.59,"contrib_previdenciaria":-5273.96,"imposto_renda":-8000.49,"outros_descontos":-2.42},{"nome":"RICARDO FERREIRA DA SILVA","cargo":"Procurador","lotacao":"PROCURADORIA DE EXECUCOES PRECATORIOS E CALCULOS","cidade":"Curitiba","ato_formal":"PGE-DEC-04.123/23052016","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":345.18,"contrib_previdenciaria":-5273.96,"imposto_renda":-8000.49,"outros_descontos":-2.42},{"nome":"DANIELA LUIZ SIMOES","cargo":"Procurador","lotacao":"PROCURADORIA DO PATRIMONIO - PRP","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":11773.24,"indice_verbas_ind":0.253919,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-5551.54,"imposto_renda":-8365.13,"outros_descontos":-2.42},{"nome":"LILIAM CRISTINA TEIXEIRA NASCIMENTO","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE LONDRINA","cidade":"Londrina","ato_formal":"PGE-DEC-08.256/03092010","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":13216.62,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":10227.7,"indice_verbas_ind":0.220585,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-5551.54,"imposto_renda":-11028.26,"outros_descontos":-2.42},{"nome":"ELAINE KIRSCHNICK SEYR PIRES","cargo":"Advogado","lotacao":"PROCURADORIA AMBIENTAL - PAM","cidade":"Curitiba","ato_formal":"SEAP-POR-99999/03021986","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-5858.37,"imposto_renda":-10546.64,"outros_descontos":-15618.0},{"nome":"FRANCISCO ADEMIR DE ANDRADE","cargo":"Advogado","lotacao":"PROCURADORIA AMBIENTAL - PAM","cidade":"Curitiba","ato_formal":"SEAP-POR-99999/03021986","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-5858.37,"imposto_renda":-8883.45,"outros_descontos":-252.42},{"nome":"GABRIEL MONTILHA","cargo":"Advogado","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"SEAP-RES-00297/29051986","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-5858.37,"imposto_renda":-10546.64,"outros_descontos":-2473.7},{"nome":"JOSE VALDECIR CAVALINI","cargo":"Advogado","lotacao":"PROCURADORIA REGIONAL DE MARINGA","cidade":"Maringá","ato_formal":"PGE-RES-00.101/29102010","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-5858.37,"imposto_renda":-8935.59,"outros_descontos":-8351.79},{"nome":"JOSEANE LUZIA SILVA","cargo":"Advogado","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"SEAP-POR-99999/04041983","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-5858.37,"imposto_renda":-10546.64,"outros_descontos":-2303.8},{"nome":"LEILA CUELLAR","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE RECURSOS HUMANOS - PCRH","cidade":"Curitiba","ato_formal":"SEAP-DEC-02573/29091993","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":6151.29,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-6151.29,"imposto_renda":-11174.15,"outros_descontos":-2.42},{"nome":"MARIA DE GUADALUPE CARVALHO DE OLIVEIRA MORETTI SCHNEIDER","cargo":"Advogado","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"SEAP-POR-99999/08041988","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-5858.37,"imposto_renda":-10546.64,"outros_descontos":-6371.6},{"nome":"MAURICIO PEREIRA DA SILVA","cargo":"Procurador","lotacao":"PROCURADORIA TRABALHISTA - PRT","cidade":"Curitiba","ato_formal":"SEAP-DEC-01233/31081987","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":6151.29,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-6151.29,"imposto_renda":-11122.02,"outros_descontos":-73.42},{"nome":"ROGERIO LICHACOVSKI","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE CAMPO MOURAO","cidade":"Campo Mourão","ato_formal":"SEAP-DEC-02573/29091993","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":6151.29,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-6151.29,"imposto_renda":-11174.15,"outros_descontos":-12233.7},{"nome":"ROSANGELA DO SOCORRO ALVES","cargo":"Procurador","lotacao":"PROCURADORIA DE PREVIDENCIA FUNCIONAL - PPF","cidade":"Curitiba","ato_formal":"SEAP-DEC-00234/02021995","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":6151.29,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-6151.29,"imposto_renda":-11174.15,"outros_descontos":-2.42},{"nome":"TEREZA CRISTINA MARINONI FREIRE","cargo":"Procurador","lotacao":"PROCURADORIA DA DÍVIDA ATIVA - PDA","cidade":"Curitiba","ato_formal":"SEAP-DEC-01512/05111999","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":6151.29,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-6151.29,"imposto_renda":-11174.15,"outros_descontos":-2.42},{"nome":"YEDA VARGAS RIVABEM BONILHA","cargo":"Procurador","lotacao":"PROCURADORIA DE PREVIDENCIA FUNCIONAL - PPF","cidade":"Curitiba","ato_formal":"SEAP-DEC-02045/23052000","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":14644.46,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-6151.29,"imposto_renda":-12329.79,"outros_descontos":-10813.35},{"nome":"DAYANA DE CARVALHO UHDRE","cargo":"Procurador","lotacao":"PROCURADORIA DO CONTENCIOSO FISCAL - PCF","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-5551.54,"imposto_renda":-8469.4,"outros_descontos":-1800.94},{"nome":"WILSON MARTINS MATSUNAGA JUNIOR","cargo":"Procurador","lotacao":"PROCURADORIA DE AÇÕES COLETIVAS - PAC","cidade":"Curitiba","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-5551.54,"imposto_renda":-8469.4,"outros_descontos":-2.42},{"nome":"ELPIDIO RODRIGUES GARCIA JUNIOR","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE GUARAPUAVA","cidade":"Guarapuava","ato_formal":"SEAP-DEC-02774/01042004","remuneracao":43290.55,"funcao_confianca":3075.64,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":5843.72,"revisoes":0,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-5843.72,"imposto_renda":-11363.67,"outros_descontos":-317.42},{"nome":"PABLO RODRIGUES ALVES","cargo":"Procurador","lotacao":"PROCURADORIA REGIONAL DE CASCAVEL","cidade":"Cascavel","ato_formal":"PGE-DEC-03.240/19082008","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-5551.54,"imposto_renda":-8469.4,"outros_descontos":-2.42},{"nome":"DENISE DUARTE SILVA","cargo":"Advogado","lotacao":"COORDENADORIA JUDICIAL - CJUD","cidade":"Curitiba","ato_formal":"SEAP-POR-99999/12071985","remuneracao":48458.46,"funcao_confianca":0,"redutor_salarial":-2092.27,"gratificacoes":0,"ferias":0,"abono_permanencia":5858.37,"revisoes":0,"verbas_indenizatorias":4045.54,"indice_verbas_ind":0.087252,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-5858.37,"imposto_renda":-10598.78,"outros_descontos":-15282.79},{"nome":"ANTONIO PEDRO DE LIMA PELLEGRINO","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE AQUISIÇÕES E SERVIÇOS- PRC","cidade":"Curitiba","ato_formal":"PGE-DEC-02.710/10092019","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":7136.62,"indice_verbas_ind":0.153919,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-5273.96,"imposto_renda":-8000.49,"outros_descontos":-2.42},{"nome":"RENATO ANDRADE KERSTEN","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE CONCESSOES CONVENIOS E PARCERIAS","cidade":"Curitiba","ato_formal":"PGE-DEC-05.027/14092016","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":7136.62,"indice_verbas_ind":0.153919,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-5273.96,"imposto_renda":-8000.49,"outros_descontos":-5130.04},{"nome":"ADRIANA RIBEIRO GONCALVES DE MENDONCA MORI","cargo":"Procurador","lotacao":"PROCURADORIA CONSULTIVA DE OBRAS E SERVIÇOS DE ENGENHARIA-PCO","cidade":"Curitiba","ato_formal":"PGE-DEC-05.793/30082012","remuneracao":46366.19,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":0,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-5273.96,"imposto_renda":-7844.08,"outros_descontos":-2.42},{"nome":"ALINE PINHEIRO DE CARVALHO VIEIRA","cargo":"Procurador","lotacao":"PROCURADORIA DE AÇÕES COLETIVAS - PAC","cidade":"Curitiba","ato_formal":"PGE-DEC-04.296/09042012","remuneracao":45862.65,"funcao_confianca":0,"redutor_salarial":0,"gratificacoes":0,"ferias":0,"abono_permanencia":0,"revisoes":503.54,"verbas_indenizatorias":5591.08,"indice_verbas_ind":0.120585,"limitacao":0,"auxilio_saude":0.0,"contrib_previdenciaria":-5622.03,"imposto_renda":-8588.49,"outros_descontos":-2.42}];
+let state = {
+  filtered: [...DATA],
+  page: 1,
+  perPage: 20,
+  sortKey: 'nome',
+  sortDir: 'asc'
+};
+
+const fmt = (n) => {
+  if (n === 0 || n === null || n === undefined) return '—';
+  return n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+};
+const fmtPct = (n) => {
+  if (!n) return '—';
+  return (n * 100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
+};
+
+// Parseia o IdAtoFormal (ex: PGE-DEC-04.296/09042012) para formato legível
+function parseAto(raw) {
+  if (!raw || raw === 'MIG' || raw === '') return 'Não informado';
+  const m = raw.match(/^([A-Z]+)-([A-Z]+)-([\d.]+)\/(\d{2})(\d{2})(\d{4})$/);
+  if (!m) return raw;
+  const [, org, tipo, num, d, mo, y] = m;
+  const TYPE_NAMES = {
+    'DEC': 'Decreto',
+    'POR': 'Portaria',
+    'PORT': 'Portaria',
+    'RES': 'Resolução',
+    'RESCON': 'Resolução Conjunta',
+    'OFI': 'Ofício',
+  };
+  const t = TYPE_NAMES[tipo] || tipo;
+  const numTxt = num === '99999' ? '' : ` nº ${num}`;
+  return `${t} ${org}${numTxt} de ${d}/${mo}/${y}`;
+}
+
+function totalDescontos(e) {
+  // Descontos do contracheque: contribuição previdenciária, IR, outros (todos negativos no dado)
+  return (e.contrib_previdenciaria || 0) + (e.imposto_renda || 0) + (e.outros_descontos || 0);
+}
+function totalRemuneracaoF(e) {
+  // Tudo que compõe a remuneração (créditos), incluindo verbas indenizatórias e auxílio-saúde
+  return (e.remuneracao || 0) + (e.funcao_confianca || 0) + (e.redutor_salarial || 0)
+       + (e.gratificacoes || 0) + (e.ferias || 0) + (e.abono_permanencia || 0)
+       + (e.revisoes || 0)
+       + (e.verbas_indenizatorias || 0) + (e.auxilio_saude || 0);
+}
+function totalLiquido(e) {
+  // Líquido = Remuneração + Descontos. Limitação é ajuste futuro, não entra.
+  return totalRemuneracaoF(e) + totalDescontos(e);
+}
+function totalBruto(e) {
+  // Mantido para compatibilidade — equivalente à Remuneração total
+  return totalRemuneracaoF(e);
+}
+
+function enrich(e) {
+  return {
+    ...e,
+    total_descontos: totalDescontos(e),
+    bruto: totalBruto(e),
+    liquido: totalLiquido(e)
+  };
+}
+
+function render() {
+  const enriched = state.filtered.map(enrich);
+
+  // Sort
+  enriched.sort((a, b) => {
+    let av = a[state.sortKey], bv = b[state.sortKey];
+    if (typeof av === 'string') {
+      const r = av.localeCompare(bv, 'pt-BR');
+      return state.sortDir === 'asc' ? r : -r;
+    }
+    av = av || 0; bv = bv || 0;
+    return state.sortDir === 'asc' ? av - bv : bv - av;
+  });
+
+  // Paginate
+  const start = (state.page - 1) * state.perPage;
+  const slice = enriched.slice(start, start + state.perPage);
+
+  const tbody = document.getElementById('tbody');
+  if (slice.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="2" class="empty-state"><h3>Nenhum registro encontrado</h3><p>Refine os filtros e tente novamente.</p></td></tr>`;
+  } else {
+    tbody.innerHTML = slice.map((e, i) => `
+      <tr onclick="showDetail('${e.nome.replace(/'/g, "\\'")}')">
+        <td class="nome-cell">${e.nome}</td>
+        <td><span class="cargo-badge cargo-${e.cargo.toLowerCase()}">${e.cargo}</span></td>
+      </tr>
+    `).join('');
+  }
+
+  document.getElementById('count-shown').textContent = slice.length;
+  document.getElementById('count-total').textContent = enriched.length;
+
+  // Update sort indicators
+  document.querySelectorAll('thead th').forEach(th => {
+    th.classList.remove('sort-asc', 'sort-desc');
+    if (th.dataset.key === state.sortKey) {
+      th.classList.add(state.sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+    }
+  });
+
+  // Pagination
+  const totalPages = Math.max(1, Math.ceil(enriched.length / state.perPage));
+  const pc = document.getElementById('page-controls');
+  let html = `<button onclick="setPage(1)" ${state.page === 1 ? 'disabled' : ''}>«</button>`;
+  html += `<button onclick="setPage(${state.page - 1})" ${state.page === 1 ? 'disabled' : ''}>‹</button>`;
+  const showFrom = Math.max(1, state.page - 2);
+  const showTo = Math.min(totalPages, showFrom + 4);
+  for (let p = showFrom; p <= showTo; p++) {
+    html += `<button class="${p === state.page ? 'current' : ''}" onclick="setPage(${p})">${p}</button>`;
+  }
+  html += `<button onclick="setPage(${state.page + 1})" ${state.page === totalPages ? 'disabled' : ''}>›</button>`;
+  html += `<button onclick="setPage(${totalPages})" ${state.page === totalPages ? 'disabled' : ''}>»</button>`;
+  pc.innerHTML = html;
+}
+
+function setPage(p) { state.page = p; render(); }
+function setPerPage() {
+  state.perPage = parseInt(document.getElementById('per-page').value);
+  state.page = 1; render();
+}
+
+function applyFilters() {
+  const name = document.getElementById('f-name').value.trim().toLowerCase();
+
+  // Exige nome para liberar a consulta
+  if (!name) {
+    document.getElementById('search-prompt').classList.remove('hidden');
+    document.getElementById('actions-bar').classList.add('hidden');
+    document.getElementById('table-wrapper').classList.add('hidden');
+    return;
+  }
+
+  document.getElementById('search-prompt').classList.add('hidden');
+  document.getElementById('actions-bar').classList.remove('hidden');
+  document.getElementById('table-wrapper').classList.remove('hidden');
+
+  // Normaliza removendo acentos e colapsa espaços, para tolerar variações de digitação
+  const norm = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+  const target = norm(name);
+
+  // Reconhecimento somente com a digitação COMPLETA do nome (match exato, ignorando acentos/caixa)
+  state.filtered = DATA.filter(e => norm(e.nome) === target);
+  state.page = 1;
+  render();
+}
+
+// Busca só dispara ao clicar em Buscar ou apertar Enter — não é automática.
+document.getElementById('f-name').addEventListener('keydown', (ev) => {
+  if (ev.key === 'Enter') { ev.preventDefault(); applyFilters(); }
+});
+
+// Sorting
+document.querySelectorAll('thead th.sortable').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.key;
+    if (state.sortKey === key) {
+      state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+      state.sortKey = key;
+      state.sortDir = key === 'nome' ? 'asc' : 'desc';
+    }
+    render();
+  });
+});
+
+// Detail view
+let currentDetail = null;
+function showDetail(nome) {
+  const e = DATA.find(x => x.nome === nome);
+  if (!e) return;
+  currentDetail = e;
+
+  document.getElementById('view-list').classList.add('hidden');
+  document.getElementById('view-detail').classList.remove('hidden');
+  const bcDetail = document.getElementById('bc-detail');
+  if (bcDetail) bcDetail.classList.remove('hidden');
+  document.getElementById('bc-detail-name') && (document.getElementById('bc-detail-name').textContent = e.nome);
+  document.getElementById('d-nome').textContent = e.nome;
+  document.getElementById('d-cargo').textContent = e.cargo === 'Procurador' ? 'Procurador(a) do Estado' : 'Advogado(a) do Estado';
+  document.getElementById('d-lotacao').textContent = e.lotacao || '—';
+  document.getElementById('d-cidade').textContent = e.cidade || '—';
+  document.getElementById('d-ato').textContent = parseAto(e.ato_formal);
+
+  // Helper para gerar ícone de tooltip
+  const tip = (txt) => `<span class="info-tip" data-tip="${txt.replace(/"/g, '&quot;')}">i</span>`;
+
+  // === Remuneração (todos os créditos: subsídio, honorários, verbas indenizatórias, auxílio-saúde) ===
+  const remuneracaoItems = [
+    ['Remuneração' + tip('Subsídio + Honorários de Sucumbência'), e.remuneracao],
+    ['Função de Confiança e/ou Cargo em Comissão' + tip('Funções da Lei Complementar nº 26/1985, Lei Complementar nº 161/2013, Direção-Geral e Chefia de Gabinete, previstos na Lei 21.352/2023.'), e.funcao_confianca],
+    ['Redutor Salarial' + tip('Limite Constitucional — art. 37, XI, CF'), e.redutor_salarial],
+    ['Gratificações (GRTR)', e.gratificacoes],
+    ['Férias', e.ferias],
+    ['Abono de Permanência', e.abono_permanencia],
+    ['Revisões (meses anteriores)' + tip('Diferenças remuneratórias de competências anteriores pagas na folha do mês.'), e.revisoes],
+    ['Verbas Indenizatórias' + tip('Auxílio Alimentação, Indenização de Licenças não usufruídas, Complementação de Diárias, Ajuda de Custo'), e.verbas_indenizatorias],
+    ['Auxílio-Saúde', e.auxilio_saude],
+  ].filter(([_, v]) => v);
+  const totalRemuneracao = remuneracaoItems.reduce((s, [_, v]) => s + v, 0);
+  document.getElementById('d-remuneracao').innerHTML =
+    remuneracaoItems.map(([l, v]) =>
+      `<div class="detail-row"><span class="label">${l}</span><span class="value ${v < 0 ? 'neg' : ''}">R$ ${fmt(v)}</span></div>`
+    ).join('') +
+    `<div class="detail-row subtotal"><span class="label">Subtotal da Remuneração</span><span class="value">R$ ${fmt(totalRemuneracao)}</span></div>`;
+
+  // === Descontos ===
+  const descontos = [
+    ['Contribuição Previdenciária', e.contrib_previdenciaria],
+    ['Imposto de Renda Retido na Fonte', e.imposto_renda],
+    ['Outros Descontos' + tip('Outros descontos tais como descontos decorrentes de faltas, atrasos, consignações facultativas (empréstimos bancários, aluguel e contribuições associativas), pensões, seguro de vida e/ou seguro jóia.'), e.outros_descontos],
+  ].filter(([_, v]) => v);
+  const totDesc = descontos.reduce((s, [_, v]) => s + v, 0);
+  document.getElementById('d-descontos').innerHTML =
+    (descontos.length === 0
+      ? '<div class="detail-row"><span class="label">Sem descontos no período.</span><span class="value">—</span></div>'
+      : descontos.map(([l, v]) =>
+          `<div class="detail-row"><span class="label">${l}</span><span class="value neg">R$ ${fmt(v)}</span></div>`
+        ).join('') +
+        `<div class="detail-row subtotal"><span class="label">Subtotal de Descontos</span><span class="value neg">R$ ${fmt(totDesc)}</span></div>`);
+
+  // === Ajustes para Próximas Folhas ===
+  const ajustes = [
+    ['Índice de Verbas Indenizatórias', e.indice_verbas_ind, 'pct'],
+    ['Excedente a ser deduzido dos próximos contracheques' + tip('Valores a serem deduzidos dos próximos contracheques em razão da limitação nos termos do Tema 966/STF.'), e.limitacao, 'brl'],
+  ].filter(([_, v]) => v);
+  const _ajustesEl = document.getElementById('d-ajustes');
+  if (_ajustesEl) _ajustesEl.innerHTML =
+    ajustes.length === 0
+      ? '<div class="detail-row"><span class="label">Sem ajustes previstos para os próximos contracheques.</span><span class="value">—</span></div>'
+      : ajustes.map(([l, v, t]) => {
+          let fmtted;
+          if (t === 'pct') {
+            fmtted = v > 0.35 ? '<span class="badge-limite">Limite de 35% ultrapassado</span>' : fmtPct(v);
+          } else {
+            fmtted = `R$ ${fmt(v)}`;
+          }
+          return `<div class="detail-row"><span class="label">${l}</span><span class="value ${v < 0 ? 'neg' : ''}">${fmtted}</span></div>`;
+        }).join('');
+
+  // === Resumo (líquido = remuneração + descontos; ajustes são informativos) ===
+  const liquido = totalRemuneracao + totDesc;
+  document.getElementById('d-resumo').innerHTML = `
+    <div class="detail-row"><span class="label">Total da Remuneração</span><span class="value">R$ ${fmt(totalRemuneracao)}</span></div>
+    <div class="detail-row"><span class="label">Total de Descontos</span><span class="value neg">R$ ${fmt(totDesc)}</span></div>
+    <div class="detail-row total"><span class="label">Total Líquido</span><span class="value">R$ ${fmt(liquido)}</span></div>
+  `;
+
+  window.scrollTo(0, 0);
+}
+
+function showList() {
+  document.getElementById('view-list').classList.remove('hidden');
+  document.getElementById('view-detail').classList.add('hidden');
+  const bcDetail = document.getElementById('bc-detail');
+  if (bcDetail) bcDetail.classList.add('hidden');
+  currentDetail = null;
+}
+
+const bcFolha = document.getElementById('bc-folha');
+if (bcFolha) bcFolha.addEventListener('click', (e) => { e.preventDefault(); showList(); });
+
+// CSV
+function csvEscape(v) {
+  if (v === null || v === undefined) return '';
+  const s = String(v);
+  if (s.includes(';') || s.includes('"') || s.includes('\n')) return '"' + s.replace(/"/g, '""') + '"';
+  return s;
+}
+
+function downloadCSV() {
+  const headers = ['Nome', 'Cargo'];
+  const rows = state.filtered.map(e => [e.nome, e.cargo].map(csvEscape).join(';'));
+  const csv = '\uFEFF' + [headers.join(';'), ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'pge-pr-procuradores-advogados.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+function downloadIndividualCSV() {
+  if (!currentDetail) return;
+  const e = currentDetail;
+  const rows = [
+    ['Item','Valor (R$)'],
+    ['Remuneração (Subsídio + Honorários)', e.remuneracao],
+    ['Função de Confiança/Comissão', e.funcao_confianca],
+    ['Redutor Salarial', e.redutor_salarial],
+    ['Gratificações (GRTR)', e.gratificacoes],
+    ['Férias', e.ferias],
+    ['Abono de Permanência', e.abono_permanencia],
+    ['Revisões (meses anteriores)', e.revisoes],
+    ['Verbas Indenizatórias', e.verbas_indenizatorias],
+    ['Índice V.I.', e.indice_verbas_ind],
+    ['Limitação', e.limitacao],
+    ['Auxílio-Saúde', e.auxilio_saude],
+    ['Contribuição Previdenciária', e.contrib_previdenciaria],
+    ['Imposto de Renda', e.imposto_renda],
+    ['Outros Descontos', e.outros_descontos],
+    ['LÍQUIDO', totalLiquido(e)],
+  ];
+  const csv = '\uFEFF' + rows.map(r => r.map(csvEscape).join(';')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'contracheque-' + e.nome.toLowerCase().replace(/\s+/g, '-') + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Font size
+let fontStep = 0;
+function changeFontSize(d) {
+  if (d === 0) fontStep = 0;
+  else fontStep = Math.max(-2, Math.min(3, fontStep + d));
+  document.documentElement.style.fontSize = (100 + fontStep * 10) + '%';
+}
+
+// Reposiciona tooltips (.info-tip) para cima quando próximos do rodapé da janela,
+// evitando que a caixa de texto seja cortada no final da página.
+document.addEventListener('mouseover', (ev) => {
+  const t = ev.target.closest ? ev.target.closest('.info-tip') : null;
+  if (!t) return;
+  const r = t.getBoundingClientRect();
+  const spaceBelow = window.innerHeight - r.bottom;
+  if (spaceBelow < 200) t.classList.add('up');
+  else t.classList.remove('up');
+});
+
+// Initial
+document.getElementById('updated-at').textContent = new Date().toLocaleDateString('pt-BR', {
+  day: '2-digit', month: 'long', year: 'numeric'
+});
+// Sem render inicial — tabela só aparece após digitação do nome
+state.filtered = [];
+</script>
+
+</body>
+</html>
